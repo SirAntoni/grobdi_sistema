@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if(isset($_SESSION['usuario'])){
+    header('Location: system?view=proveedores');
+}
+
+?>
 <!doctype html>
 <html class="fixed">
 
@@ -17,7 +25,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <!-- Web Fonts  -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800|Shadows+Into+Light"
+        rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css" />
@@ -53,27 +62,28 @@
 
             <div class="panel card-sign">
                 <div class="card-title-sign mt-3 text-end">
-                    <h2 class="title text-uppercase font-weight-bold m-0"><i class="bx bx-user-circle me-1 text-6 position-relative top-5"></i> Iniciar sesión</h2>
+                    <h2 class="title text-uppercase font-weight-bold m-0"><i
+                            class="bx bx-user-circle me-1 text-6 position-relative top-5"></i> Iniciar sesión</h2>
                 </div>
                 <div class="card-body">
-                    <form action="index.html" method="post">
+                    <form id='formLogin' method="post">
                         <div class="form-group mb-3">
                             <label>Usuario</label>
                             <div class="input-group">
-                                <input name="username" type="text" class="form-control form-control-lg" />
+                                <input name="usuario" type="text" class="form-control form-control-lg" />
                                 <span class="input-group-text">
-										<i class="bx bx-user text-4"></i>
-									</span>
+                                    <i class="bx bx-user text-4"></i>
+                                </span>
                             </div>
                         </div>
 
                         <div class="form-group mb-3">
                             <label>Contraseña</label>
                             <div class="input-group">
-                                <input name="pwd" type="password" class="form-control form-control-lg" />
+                                <input name="password" type="password" class="form-control form-control-lg" />
                                 <span class="input-group-text">
-										<i class="bx bx-lock text-4"></i>
-									</span>
+                                    <i class="bx bx-lock text-4"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -104,6 +114,8 @@
     <script src="vendor/nanoscroller/nanoscroller.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.js"></script>
     <script src="vendor/jquery-placeholder/jquery.placeholder.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Specific Page Vendor -->
 
@@ -115,6 +127,41 @@
 
     <!-- Theme Initialization Files -->
     <script src="js/theme.init.js"></script>
+
+
+    <script>
+    $(function() {
+        iniciar_sesion();
+    })
+
+    const iniciar_sesion = () => {
+
+        $('#formLogin').submit(function(e) {
+            e.preventDefault();
+
+            const data = $(this).serialize();
+
+            $.ajax({
+                url: 'controller/usuarios.php',
+                method: 'POST',
+                data: data,
+                success: function(response) {
+                    const data = JSON.parse(response);
+                    if (data.status == 'success') {
+                        window.location = data.url
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.message
+                        })
+                    }
+                }
+            })
+        })
+
+    }
+    </script>
 
 </body>
 

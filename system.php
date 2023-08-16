@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['usuario'])){
+    header('Location:./');
+}
+
+?>
 <!doctype html>
 <html class="fixed js flexbox flexboxlegacy no-touch csstransforms csstransforms3d no-overflowscrolling webkit chrome mac js no-mobile-device custom-scroll sidebar-left-xs">
 
@@ -85,7 +93,7 @@
                                 <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="bx bx-user-circle"></i> Cambiar contraseña</a>
                             </li>
                             <li>
-                                <a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="bx bx-power-off"></i> Salir</a>
+                                <a role="menuitem" tabindex="-1" href="logout.php"><i class="bx bx-power-off"></i> Salir</a>
                             </li>
                         </ul>
                     </div>
