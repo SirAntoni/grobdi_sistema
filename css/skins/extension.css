@@ -1,0 +1,129 @@
+html.dark .checkbox-primary label:before,
+.checkbox-primary label:before {
+    background: #ec5853;
+    border-color: #e9423c;
+}
+
+html.dark .checkbox-text-primary input[type="checkbox"]:checked+label:after,
+.checkbox-text-primary input[type="checkbox"]:checked+label:after {
+    color: #ec5853;
+}
+
+html.dark .radio-primary input[type="radio"]:checked+label:after,
+.radio-primary input[type="radio"]:checked+label:after {
+    background: #ec5853;
+    box-shadow: 0px 0px 1px #ec5853;
+}
+
+.switch.switch-primary .ios-switch .on-background {
+    background: #ec5853;
+}
+
+.progress-bar {
+    background-color: #ec5853;
+}
+
+.progress .progress-bar-primary {
+    background-color: #ec5853;
+}
+
+.slider-primary .ui-slider-range,
+.slider-primary .ui-slider-handle {
+    background: #ec5853;
+}
+
+.slider-gradient.slider-primary .ui-slider-range,
+.slider-gradient.slider-primary .ui-slider-handle {
+    background-image: linear-gradient(to left, #f18581 0, #ec5853 50%, #e72b25 100%);
+}
+
+.slider-gradient.ui-slider-vertical.slider-primary .ui-slider-range,
+.slider-gradient.ui-slider-vertical.slider-primary .ui-slider-handle {
+    background-image: linear-gradient(to right, #f18581 0, #ec5853 50%, #e72b25 100%);
+}
+
+.datepicker thead tr:first-child th:hover,
+.datepicker tfoot tr th:hover,
+.datepicker table tr td span:hover {
+    background: #ec5853;
+}
+
+.datepicker .datepicker-switch:hover,
+.datepicker .prev:hover,
+.datepicker .next:hover {
+    background: #ec5853;
+}
+
+.datepicker table thead tr:last-child th:hover {
+    color: #ec5853;
+}
+
+.datepicker table tbody tr td.day:hover {
+    background: #ec5853;
+}
+
+.datepicker table tbody tr td.day.active {
+    background: #e72b25;
+}
+
+html:not(.sidebar-light) .datepicker.datepicker-dark {
+    background: transparent;
+}
+
+html:not(.sidebar-light) .datepicker.datepicker-dark table tbody tr td.day:hover {
+    background: #ec5853;
+}
+
+html:not(.sidebar-light) .datepicker.datepicker-dark table tbody tr td.day.active {
+    background: #e72b25;
+}
+
+.datepicker.datepicker-primary table thead tr:first-child {
+    background-color: #ec5853;
+}
+
+.datepicker.datepicker-primary table thead tr:first-child th:hover {
+    background-color: #e72b25;
+}
+
+.datepicker.datepicker-primary table thead tr:last-child {
+    background-color: #ef6e6a;
+}
+
+.datepicker.datepicker-primary table thead tr:last-child th:hover {
+    background-color: #ec5853;
+    color: #FFF;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+    background: #ec5853;
+}
+
+.table>thead>tr>td.primary,
+.table>tbody>tr>td.primary,
+.table>tfoot>tr>td.primary,
+.table>thead>tr>th.primary,
+.table>tbody>tr>th.primary,
+.table>tfoot>tr>th.primary,
+.table>thead>tr.primary>td,
+.table>tbody>tr.primary>td,
+.table>tfoot>tr.primary>td,
+.table>thead>tr.primary>th,
+.table>tbody>tr.primary>th,
+.table>tfoot>tr.primary>th {
+    background-color: #ec5853 !important;
+}
+
+.dataTables_processing {
+    background-color: #ec5853;
+}
+
+.liquid-meter-wrapper .liquid-meter-selector a.active {
+    color: #ec5853;
+}
+
+.multiselect-container>.active>a,
+.multiselect-container>.active>a:hover,
+.multiselect-container>.active>a:focus {
+    background-color: #ec5853;
+}
