@@ -8,7 +8,7 @@ class Conectar
         try {
 
             if($_SERVER['SERVER_NAME'] == "grobdi.com.pe"){
-                $conectar = $this->dbh = new PDO("mysql:local=localhost;dbname=t6j7r6k9_stock","t6j7r6k9_stock","He82ijyYw^YZ");
+                $conectar = $this->dbh = new PDO("mysql:local=localhost;dbname=f5b2o5p9_sistema","f5b2o5p9_sistema","@nT0ny53");
             }else{
                 $conectar = $this->dbh = new PDO("mysql:local=localhost;dbname=grobdi_sistema","root","root");
             }
