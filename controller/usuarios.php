@@ -16,7 +16,7 @@ $_usuario = 'jose';
 $_password = '123456';
 
 
-if($usuario === $_usuario && $_password === $_password){
+if($usuario === $_usuario && $password === $_password){
     $_SESSION['usuario'] = 'jose';
     $response = [
         "status" => "success",
