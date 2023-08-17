@@ -7,24 +7,25 @@
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div>
 
-                <h2 class="card-title">Lista de proveedores</h2>
+                <h2 class="card-title">Historial de tipos de cambio</h2>
             </header>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class='table-responsive'>
                 <table class="table table-responsive-md table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Ruc</th>
-                            <th>Razón social</th>
-                            <th>Telefono</th>
-                            <th>Contacto</th>
+                            <th>#</th>
+                            <th>Compra</th>
+                            <th>Venta</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
-                    <tbody id='table-proveedores'>
+                    <tbody id='table-tipo-cambio'>
                     <tr>
-                            <td colspan='5' class='text-center'>Cargando...</td>
-                        </tr>
+                                <td colspan='6' class='text-center'>Cargando...</td>
+                            </tr>
                     </tbody>
                 </table>
                 </div>

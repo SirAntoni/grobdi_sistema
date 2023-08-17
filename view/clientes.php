@@ -7,23 +7,25 @@
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div>
 
-                <h2 class="card-title">Lista de proveedores</h2>
+                <h2 class="card-title">Lista de clientes</h2>
             </header>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class='table-responsive'>
                 <table class="table table-responsive-md table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Ruc</th>
-                            <th>Razón social</th>
-                            <th>Telefono</th>
-                            <th>Contacto</th>
+                            <th>#</th>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Doctor</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
-                    <tbody id='table-proveedores'>
-                    <tr>
-                            <td colspan='5' class='text-center'>Cargando...</td>
+                    <tbody id='table-clientes'>
+                        <tr>
+                            <td colspan='7' class='text-center'>Cargando...</td>
                         </tr>
                     </tbody>
                 </table>
