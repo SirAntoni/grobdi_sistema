@@ -20,7 +20,7 @@ if($usuario === $_usuario && $password === $_password){
     $_SESSION['usuario'] = 'jose';
     $response = [
         "status" => "success",
-        "url" => "system?view=proveedores",
+        "url" => "system?view=clientes",
     ];
 
     echo json_encode($response);
