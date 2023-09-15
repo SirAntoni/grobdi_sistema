@@ -246,6 +246,9 @@ if($_GET['view'] == '') {
                     case 'tipo-cambio':
                         require 'view/tipo-cambio.php';
                             break;
+                    case 'doctores':
+                        require 'view/doctores.php';
+                            break;
                     default:
                         require 'view/dashboard.php';
                         break;

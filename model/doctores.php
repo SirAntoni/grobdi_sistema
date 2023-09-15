@@ -1,6 +1,6 @@
 <?php
 
-class Clientes extends Conectar
+class Doctores extends Conectar
 {
 
     private $db;
@@ -10,13 +10,13 @@ class Clientes extends Conectar
         $this->db = Conectar::conexion();
     }
 
-    public function get_clientes_paginacion($pagina)
+    public function get_doctores_paginacion($pagina)
     {       
             $pagina = is_null($pagina) ? 1 : (int)$pagina;
-            $regPagina = 20;
+            $regPagina = 15;
             $inicio = ($pagina > 1) ? (($pagina * $regPagina)) - $regPagina : 0;
             
-            $registros = "SELECT SQL_CALC_FOUND_ROWS * FROM clientes ORDER BY id DESC LIMIT :inicio,:total";
+            $registros = "SELECT SQL_CALC_FOUND_ROWS * FROM doctores ORDER BY id DESC LIMIT :inicio,:total";
             $registros = $this->db->prepare($registros);
             $registros->bindParam(':inicio',$inicio,PDO::PARAM_INT);
             $registros->bindParam(':total',$regPagina,PDO::PARAM_INT);
@@ -36,10 +36,10 @@ class Clientes extends Conectar
             return $data;
     }
 
-    public function get_cliente($codigoCliente){
-        $query = "SELECT * FROM clientes WHERE codigo_cliente = ?";
+    public function get_doctor($codigo){
+        $query = "SELECT * FROM clientes WHERE codigo_doctor = ?";
         $query = $this->db->prepare($query);
-        $query->bindValue(1,$codigoCliente);
+        $query->bindValue(1,$codigo);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
     }
