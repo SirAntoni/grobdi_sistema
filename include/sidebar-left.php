@@ -196,14 +196,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent">
+                    <li class="nav-parent <?php echo ($view === 'doctores' ) ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-server" aria-hidden="true"></i>
                             <span>Visitas</span>
                         </a>
                         <ul class="nav nav-children">
-                            <li>
-                                <a class="nav-link" href="ecommerce-dashboard.html">
+                            <li <?php echo ($view === 'doctores') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=doctores">
                                     Doctores
                                 </a>
                             </li>
