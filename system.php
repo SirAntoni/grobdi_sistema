@@ -237,6 +237,9 @@ if($_GET['view'] == '') {
                     case 'clientes':
                         require 'view/clientes.php';
                         break;
+                    case 'detalle_cliente':
+                        require 'view/detalle_cliente.php';
+                        break;
                     case 'proveedores':
                         require 'view/proveedores.php';
                         break;
@@ -341,154 +344,11 @@ if($_GET['view'] == '') {
     <!-- Theme Custom -->
     <script src="js/custom.js"></script>
 
+    <!-- APP JS -->
+    <script src="js/app.js"></script>
+
     <!-- Theme Initialization Files -->
     <script src="js/theme.init.js"></script>
-
-    <script>
-    $(function() {
-        listar_unidades();
-        listar_proveedores();
-        listar_clientes();
-        listar_categorias();
-        listar_presentacion();
-        listar_laboratorios();
-        listar_tipo_cambio();
-    })
-
-
-    let listar_unidades = function() {
-        $.ajax({
-            url: 'controller/unidad-medida.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['id']}</td><td>${unidad['nombre']}</td><td>${unidad['estado']}</td> <td>${unidad['fecha_creacion']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-unidad-medida').html(html);
-            }
-        })
-    }
-
-    let listar_categorias = function() {
-        $.ajax({
-            url: 'controller/categorias.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['id']}</td><td>${unidad['nombre']}</td><td>${unidad['estado']}</td> <td>${unidad['fecha_creacion']}</td><td>${unidad['estado']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-categorias').html(html);
-            }
-        })
-    }
-
-    let listar_presentacion = function() {
-        $.ajax({
-            url: 'controller/presentacion.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['id']}</td><td>${unidad['nombre']}</td><td>${unidad['estado']}</td> <td>${unidad['fecha_creacion']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-presentacion').html(html);
-            }
-        })
-    }
-
-    let listar_tipo_cambio = function() {
-        $.ajax({
-            url: 'controller/tipo-cambio.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['id']}</td><td>${unidad['compra']}</td><td>${unidad['venta']}</td> <td>${unidad['estado']}</td><td>${unidad['fecha_creacion']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-tipo-cambio').html(html);
-            }
-        })
-    }
-
-    let listar_clientes = function() {
-        $.ajax({
-            url: 'controller/clientes.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['id']}</td><td>${unidad['documento']}</td><td>${unidad['nombre']}</td> <td>${unidad['doctor']}</td><td>${unidad['estado']}</td> <td>${unidad['fecha_creacion']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-clientes').html(html);
-            }
-        })
-    }
-
-    let listar_laboratorios = function() {
-        $.ajax({
-            url: 'controller/laboratorios.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['id']}</td><td>${unidad['ruc']}</td><td>${unidad['nombre']}</td> <td>${unidad['contacto']}</td><td>${unidad['estado']}</td> <td>${unidad['fecha_creacion']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-laboratorios').html(html);
-            }
-        })
-    }
-
-    let listar_proveedores = function() {
-        $.ajax({
-            url: 'controller/proveedores.php',
-            method: 'GET',
-            success: function(response) {
-                const data = JSON.parse(response);
-                let html = ``;
-                data.forEach(unidad => {
-                    html = html + `<tr> <td>${unidad['documento']}</td><td>${unidad['nombre']}</td><td>${unidad['telefono']}</td> <td>${unidad['observacion']}</td><td width='30px' class="actions-hover actions-fade">
-                                <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
-                            </td></tr>`;
-                })
-
-                $('#table-proveedores').html(html);
-            }
-        })
-    }
-    </script>
 
 </body>
 

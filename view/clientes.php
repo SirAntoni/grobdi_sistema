@@ -11,25 +11,42 @@
             </header>
             <div class="card-body">
                 <div class='table-responsive'>
-                <table class="table table-responsive-md table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Documento</th>
-                            <th>Nombre</th>
-                            <th>Doctor</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id='table-clientes'>
-                        <tr>
-                            <td colspan='7' class='text-center'>Cargando...</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-responsive-md table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Documento</th>
+                                <th>Nombre</th>
+                                <th>Doctor</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id='table-clientes'>
+                            <tr>
+                                <td colspan='7' class='text-center'>Cargando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                 </div>
+                <nav class='mt-4' id='paginacion'>
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
             </div>
         </section>
     </div>
