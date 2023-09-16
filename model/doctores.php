@@ -37,7 +37,7 @@ class Doctores extends Conectar
     }
 
     public function get_doctor($codigo){
-        $query = "SELECT * FROM clientes WHERE codigo_doctor = ?";
+        $query = "SELECT * FROM doctores WHERE codigo_doctor = ?";
         $query = $this->db->prepare($query);
         $query->bindValue(1,$codigo);
         $query->execute();

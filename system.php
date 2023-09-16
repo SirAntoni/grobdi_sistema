@@ -249,6 +249,9 @@ if($_GET['view'] == '') {
                     case 'doctores':
                         require 'view/doctores.php';
                             break;
+                    case 'detalle_doctor':
+                        require 'view/detalle_doctor.php';
+                            break;
                     default:
                         require 'view/dashboard.php';
                         break;

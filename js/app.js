@@ -5,6 +5,9 @@ $(function() {
         obtener_cliente(params.get('codigo_cliente'))
         guardar_cliente()
     }
+    if (params.get('view') === "detalle_doctor") {
+        obtener_doctor(params.get('codigo_doctor'))
+    }
     if (params.get('view') === "clientes") listar_clientes(1);
     if (params.get('view') === "doctores") listar_doctores(1);
 
@@ -25,7 +28,6 @@ const guardar_cliente = function() {
 }
 
 const obtener_cliente = function(codigo_cliente = '') {
-
     if (!codigo_cliente) window.location = "system?view=clientes"
 
     const body = {
@@ -54,6 +56,34 @@ const obtener_cliente = function(codigo_cliente = '') {
 
 }
 
+const obtener_doctor = function(codigo_doctor = '') {
+
+    if (!codigo_doctor) window.location = "system?view=doctores"
+
+    const body = {
+        option: 'obtener_doctor',
+        codigo_doctor
+    }
+
+    $.ajax({
+        url: 'controller/doctores.php',
+        method: 'POST',
+        data: body,
+        success: function(response) {
+            const data = JSON.parse(response)
+            console.log(data)
+            $("#codigo_doctor").val(data.codigo_doctor)
+            $("#nombre_doctor").val(data.nombre_doctor)
+            $("#apellido_doctor").val(data.apellido_doctor)
+            $("#codigo_cmp").val(data.codigo_cmp)
+            $("#telefono").val(data.telefono1)
+        }
+    })
+
+
+
+}
+
 const listar_doctores = function(pagina = 1) {
     $.ajax({
         url: `controller/doctores.php?pagina=${pagina}`,
@@ -73,8 +103,8 @@ const listar_doctores = function(pagina = 1) {
                 html =
                     html +
                     `<tr> <td>${unidad["codigo_doctor"]}</td><td>${unidad["nombre_doctor"]}</td><td>${zona}</td> <td>${unidad["distrito"]}</td><td>${tipo}</td><td>${registro}</td><td>${ultima_visita}</td><td>${nuevo}</td><td width='30px' class="">
-                            <a href="system?view=detalle_cliente&codigo_cliente=${unidad["codigo_cliente"]}"><i class="fas fa-pencil-alt"></i></a>
-                            <a href="#" class="delete-row" onclick="eliminar_cliente(${unidad["codigo_cliente"]})"><i class="far fa-trash-alt"></i></a>
+                            <a href="system?view=detalle_doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
                         </td></tr>`;
             });
 

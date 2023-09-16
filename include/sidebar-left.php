@@ -196,13 +196,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent <?php echo ($view === 'doctores' ) ? 'nav-active nav-expanded':'' ?>">
+                    <li class="nav-parent <?php echo ($view === 'doctores' || $view === 'detalle_doctor' ) ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-server" aria-hidden="true"></i>
                             <span>Visitas</span>
                         </a>
                         <ul class="nav nav-children">
-                            <li <?php echo ($view === 'doctores') ? 'class="nav-active"' : ''; ?>>
+                            <li <?php echo ($view === 'doctores' || $view === 'detalle_doctor') ? 'class="nav-active"' : ''; ?>>
                                 <a class="nav-link" href="system?view=doctores">
                                     Doctores
                                 </a>
