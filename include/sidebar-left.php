@@ -244,14 +244,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent">
+                    <li class="nav-parent <?php echo ($view === 'documentos-electronicos') ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bxs-dollar-circle" aria-hidden="true"></i>
                             <span>Facturación</span>
                         </a>
                         <ul class="nav nav-children">
-                            <li>
-                                <a class="nav-link" href="ecommerce-dashboard.html">
+                            <li <?php echo ($view === 'documentos-electronicos') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=documentos-electronicos">
                                     Doc. Electronicos
                                 </a>
                             </li>

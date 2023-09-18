@@ -10,6 +10,7 @@ $(function() {
     }
     if (params.get('view') === "clientes") listar_clientes(1);
     if (params.get('view') === "doctores") listar_doctores(1);
+    if (params.get('view') === "documentos-electronicos") listar_documentos(1);
 
 });
 
@@ -103,7 +104,7 @@ const listar_doctores = function(pagina = 1) {
                 html =
                     html +
                     `<tr> <td>${unidad["codigo_doctor"]}</td><td>${unidad["nombre_doctor"]}</td><td>${zona}</td> <td>${unidad["distrito"]}</td><td>${tipo}</td><td>${registro}</td><td>${ultima_visita}</td><td>${nuevo}</td><td width='30px' class="">
-                            <a href="system?view=detalle_doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
                             <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
                         </td></tr>`;
             });
@@ -263,6 +264,108 @@ const listar_clientes = function(pagina = 1) {
 
             html_paginacion += `<li class="page-item">
             <a class="page-link ${next}" href="#" onclick="listar_clientes(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-clientes").html(html);
+        }
+    });
+};
+
+const listar_documentos = function(pagina = 1) {
+    $.ajax({
+        url: `controller/documentos-electronicos.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+
+            console.log(data)
+
+            data.forEach((unidad) => {
+
+                const tipo = unidad["tipo"] || ''
+                const zona = unidad["zona"] || ''
+                const registro = unidad["registro"] || ''
+                const ultima_visita = unidad["ultima_visita"] || ''
+                const nuevo = unidad["nuevo"] || ''
+                const fecha = new Date(unidad["fecha_documento"])
+
+                html =
+                    html +
+                    `<tr><td>${fecha.toLocaleDateString('en-ES')}</td><td>${unidad["nombre_cliente"]}</td><td>${unidad["tipo_documento"]}</td><td>${unidad["serie"]}-${unidad["correlativo"]}</td><td>S/. ${unidad["total"]}</td><td class='text-center'>-</td><td width='30px' class="">
+                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-paper-plane"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="fas fa-sync-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="fas fa-arrow-circle-down"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-arrow-alt-circle-down"></i></a>
+                        </td></tr>`;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" href="#" onclick="listar_documentos(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_documentos(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_documentos(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_documentos(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_documentos(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_documentos(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_documentos(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_documentos(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_documentos(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" href="#" onclick="listar_documentos(${pagina + 1})" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
