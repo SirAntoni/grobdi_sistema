@@ -258,6 +258,21 @@ if($_GET['view'] == '') {
                     case 'insumos':
                         require 'view/insumos.php';
                             break;
+                    case 'envases':
+                        require 'view/envases.php';
+                            break;
+                    case 'bases':
+                        require 'view/bases.php';
+                            break;
+                    case 'etiquetas':
+                        require 'view/etiquetas.php';
+                            break;
+                    case 'recetas':
+                        require 'view/recetas.php';
+                            break;
+                    case 'detalle-receta':
+                        require 'view/detalle-receta.php';
+                            break;
                     default:
                         require 'view/dashboard.php';
                         break;

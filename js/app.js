@@ -13,6 +13,13 @@ $(function() {
     if (params.get('view') === "documentos-electronicos") listar_documentos(1);
     if (params.get('view') === "insumos") listar_insumos(1);
 
+    if (params.get('view') === "envases") listar_envases(1);
+    if (params.get('view') === "bases") listar_bases(1);
+    if (params.get('view') === "etiquetas") listar_etiquetas(1);
+
+    if (params.get('view') === "recetas") listar_recetas(1);
+    if (params.get('view') === "detalle-receta") obtener_insumos_receta(params.get('codigo-receta'));
+
 });
 
 
@@ -27,6 +34,37 @@ const guardar_cliente = function() {
         const data = $(this).serialize();
         console.log(data);
     })
+}
+
+const obtener_insumos_receta = function(codigo_receta = '') {
+    if (!codigo_receta) window.location = "system?view=recetas"
+
+    const body = {
+        option: 'obtener_insumos_receta',
+        codigo_receta
+    }
+
+    $.ajax({
+        url: 'controller/recetas.php',
+        method: 'POST',
+        data: body,
+        success: function(response) {
+
+            const data = JSON.parse(response)
+            let html = ``;
+            console.log(data);
+            data.forEach((unidad) => {
+                html = html +
+                    `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["articulo"]}</td><td>${unidad["cantidad"]}</td> <td>${unidad["unidad_medida"]}</td> <td width='30px' class="">
+                            <a href="system?view=detalle-receta&codigo-receta=${unidad["codigo_interno_principal"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_interno_principal"]})"><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+            });
+
+            $("#table-insumos-receta").html(html);
+        }
+    })
+
 }
 
 const obtener_cliente = function(codigo_cliente = '') {
@@ -253,7 +291,7 @@ const listar_insumos = function(pagina = 1) {
 
                 for (let count = 1; count <= numeroPaginas; count++) {
 
-                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_doctores(${count})" >${count}</a></li>`;
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_insumos(${count})" >${count}</a></li>`;
 
                 }
 
@@ -263,7 +301,7 @@ const listar_insumos = function(pagina = 1) {
 
 
             html_paginacion += `<li class="page-item">
-            <a class="page-link ${next}" href="#" onclick="listar_doctores(${pagina + 1})" aria-label="Next">
+            <a class="page-link ${next}" href="#" onclick="listar_insumos(${pagina + 1})" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
@@ -275,6 +313,361 @@ const listar_insumos = function(pagina = 1) {
     });
 };
 
+const listar_envases = function(pagina = 1) {
+    $.ajax({
+        url: `controller/envases.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+
+            data.forEach((unidad) => {
+                html = html +
+                    `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["codigo_interno_insumo"]}</td><td>${unidad["articulo"]}</td> <td>${unidad["estado_insumo"]}</td> <td width='30px' class="">
+                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" href="#" onclick="listar_envases(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_envases(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_envases(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_envases(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_envases(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_envases(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_envases(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_envases(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_envases(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" href="#" onclick="listar_envases(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-envases").html(html);
+        }
+    });
+};
+
+const listar_bases = function(pagina = 1) {
+    $.ajax({
+        url: `controller/bases.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+
+            data.forEach((unidad) => {
+                html = html +
+                    `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["codigo_interno_insumo"]}</td><td>${unidad["articulo"]}</td> <td>${unidad["estado_insumo"]}</td> <td width='30px' class="">
+                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" href="#" onclick="listar_bases(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_bases(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_bases(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_bases(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_bases(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_bases(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_bases(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_bases(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_bases(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" href="#" onclick="listar_bases(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-bases").html(html);
+        }
+    });
+};
+
+const listar_etiquetas = function(pagina = 1) {
+    $.ajax({
+        url: `controller/etiquetas.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+
+            data.forEach((unidad) => {
+                html = html +
+                    `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["codigo_interno_insumo"]}</td><td>${unidad["articulo"]}</td> <td>${unidad["estado_insumo"]}</td> <td width='30px' class="">
+                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" href="#" onclick="listar_etiquetas(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_etiquetas(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_etiquetas(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_etiquetas(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_etiquetas(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_etiquetas(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_etiquetas(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_etiquetas(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_etiquetas(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" href="#" onclick="listar_etiquetas(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-bases").html(html);
+        }
+    });
+};
+
+const listar_recetas = function(pagina = 1) {
+    $.ajax({
+        url: `controller/recetas.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+
+            data.forEach((unidad) => {
+                html = html +
+                    `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["codigo_interno_principal"]}</td><td>${unidad["articulo"]}</td> <td>${unidad["estado_insumo"]}</td> <td width='30px' class="">
+                            <a href="system?view=detalle-receta&codigo-receta=${unidad["codigo_interno_principal"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_interno_principal"]})"><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" href="#" onclick="listar_recetas(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_recetas(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_recetas(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_recetas(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_recetas(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" href="#" onclick="listar_recetas(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-bases").html(html);
+        }
+    });
+};
 const listar_clientes = function(pagina = 1) {
     $.ajax({
         url: `controller/clientes.php?pagina=${pagina}`,

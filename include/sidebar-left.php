@@ -64,7 +64,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent <?php echo ($view === 'insumos') ? 'nav-active nav-expanded':'' ?>">
+                    <li class="nav-parent <?php echo ($view === 'insumos' || $view === 'envases' || $view === 'bases' || $view === 'etiquetas' || $view === 'recetas' || $view === 'detalle-receta') ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bxl-product-hunt" aria-hidden="true"></i>
                             <span>Productos</span>
@@ -75,13 +75,13 @@
                                     Tabla Maestra
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-products-list.html">
+                            <li <?php echo ($view === 'etiquetas') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=etiquetas">
                                     Etiquetas
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-products-form.html">
+                            <li <?php echo ($view === 'recetas' || $view === 'detalle-receta') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=recetas">
                                     Recetas
                                 </a>
                             </li>
@@ -90,13 +90,13 @@
                                     Insumo
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-category-form.html">
+                            <li <?php echo ($view === 'envases') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=envases">
                                     Envase
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-coupons-list.html">
+                            <li <?php echo ($view === 'bases') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=bases">
                                     Bases
                                 </a>
                             </li>
