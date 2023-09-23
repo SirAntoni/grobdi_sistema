@@ -237,8 +237,8 @@ if($_GET['view'] == '') {
                     case 'clientes':
                         require 'view/clientes.php';
                         break;
-                    case 'detalle_cliente':
-                        require 'view/detalle_cliente.php';
+                    case 'detalle-cliente':
+                        require 'view/detalle-cliente.php';
                         break;
                     case 'proveedores':
                         require 'view/proveedores.php';
@@ -254,6 +254,9 @@ if($_GET['view'] == '') {
                             break;
                     case 'documentos-electronicos':
                         require 'view/documentos-electronicos.php';
+                            break;
+                    case 'insumos':
+                        require 'view/insumos.php';
                             break;
                     default:
                         require 'view/dashboard.php';

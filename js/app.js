@@ -1,8 +1,8 @@
 $(function() {
     var url = new URL(window.location.href);
     var params = new URLSearchParams(url.search);
-    if (params.get('view') === "detalle_cliente") {
-        obtener_cliente(params.get('codigo_cliente'))
+    if (params.get('view') === "detalle-cliente") {
+        obtener_cliente(params.get('codigo-cliente'))
         guardar_cliente()
     }
     if (params.get('view') === "detalle_doctor") {
@@ -11,6 +11,7 @@ $(function() {
     if (params.get('view') === "clientes") listar_clientes(1);
     if (params.get('view') === "doctores") listar_doctores(1);
     if (params.get('view') === "documentos-electronicos") listar_documentos(1);
+    if (params.get('view') === "insumos") listar_insumos(1);
 
 });
 
@@ -182,6 +183,98 @@ const listar_doctores = function(pagina = 1) {
     });
 };
 
+const listar_insumos = function(pagina = 1) {
+    $.ajax({
+        url: `controller/insumos.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+
+            data.forEach((unidad) => {
+
+
+                html =
+                    html +
+                    `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["codigo_interno_insumo"]}</td><td>${unidad["articulo"]}</td> <td>${unidad["estado_insumo"]}</td> <td width='30px' class="">
+                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_doctor"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" href="#" onclick="listar_insumos(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_insumos(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_insumos(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_insumos(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_insumos(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_insumos(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_insumos(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_insumos(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_doctores(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" href="#" onclick="listar_doctores(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-insumos").html(html);
+        }
+    });
+};
+
 const listar_clientes = function(pagina = 1) {
     $.ajax({
         url: `controller/clientes.php?pagina=${pagina}`,
@@ -197,7 +290,7 @@ const listar_clientes = function(pagina = 1) {
                 html =
                     html +
                     `<tr> <td>${unidad["codigo_cliente"]}</td><td>${numero_documento}</td><td>${unidad["nombre_cliente"]}</td> <td>${unidad["codigo_doctor"]}</td><td>${unidad["estado_cliente"]}</td><td width='30px' class="">
-                            <a href="system?view=detalle_cliente&codigo_cliente=${unidad["codigo_cliente"]}"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="system?view=detalle-cliente&codigo-cliente=${unidad["codigo_cliente"]}"><i class="fas fa-pencil-alt"></i></a>
                             <a href="#" class="delete-row" onclick="eliminar_cliente(${unidad["codigo_cliente"]})"><i class="far fa-trash-alt"></i></a>
                         </td></tr>`;
             });
