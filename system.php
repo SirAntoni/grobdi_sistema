@@ -243,9 +243,6 @@ if($_GET['view'] == '') {
                     case 'proveedores':
                         require 'view/proveedores.php';
                         break;
-                    case 'tipo-cambio':
-                        require 'view/tipo-cambio.php';
-                            break;
                     case 'doctores':
                         require 'view/doctores.php';
                             break;

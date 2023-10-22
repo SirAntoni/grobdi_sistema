@@ -57,11 +57,6 @@
                                     Proveedores
                                 </a>
                             </li>
-                            <li <?php echo ($view === 'tipo-cambio') ? 'class="nav-active"' : ''; ?>>
-                                <a class="nav-link" href="system?view=tipo-cambio">
-                                    Tipo de cambio
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-parent <?php echo ($view === 'insumos' || $view === 'envases' || $view === 'bases' || $view === 'etiquetas' || $view === 'recetas' || $view === 'detalle-receta') ? 'nav-active nav-expanded':'' ?>">
