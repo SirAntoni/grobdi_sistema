@@ -10,7 +10,7 @@ class Unidades extends Conectar
         $this->db = Conectar::conexion();
     }
 
-    public function get_unidades()
+    public function cargar_unidades()
     {
             $query = "SELECT * FROM unidad_medida";
             $query = $this->db->prepare($query);

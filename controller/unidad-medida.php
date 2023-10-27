@@ -4,6 +4,6 @@ require "../model/unidad-medida.php";
 
 $unidades = new Unidades();
 
-echo json_encode($unidades->get_unidades());
+echo json_encode($unidades->cargar_unidades());
 
 ?>

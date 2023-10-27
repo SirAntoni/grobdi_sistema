@@ -20,12 +20,12 @@ $(function() {
     if (params.get('view') === "recetas") listar_recetas(1);
     if (params.get('view') === "detalle-receta") obtener_insumos_receta(params.get('codigo-receta'));
 
+    cargar_unidades();
+
 });
 
-
-
 const eliminar_cliente = function(codigo = '') {
-    alert('funcion en construccion.')
+    alert('en construccion');
 }
 
 const guardar_cliente = function() {
@@ -33,6 +33,26 @@ const guardar_cliente = function() {
         e.preventDefault();
         const data = $(this).serialize();
         console.log(data);
+    })
+}
+
+const cargar_unidades = function() {
+    $.ajax({
+        url: 'controller/unidad-medida',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            data.map((unidad) => {
+                const estado = (unidad.estado === '1') ? 'si' : 'no';
+                html = html + `<tr> <td>${unidad.codigo}</td><td>${unidad.nombre}</td><td>${unidad.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="">
+                <a href="system?view=detalle-doctor&codigo_doctor=${unidad.fecha_creacion}"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+            })
+
+            $("#table-unidad-medida").html(html);
+
+        }
     })
 }
 
@@ -668,6 +688,7 @@ const listar_recetas = function(pagina = 1) {
         }
     });
 };
+
 const listar_clientes = function(pagina = 1) {
     $.ajax({
         url: `controller/clientes.php?pagina=${pagina}`,
