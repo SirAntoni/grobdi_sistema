@@ -11,7 +11,7 @@
             </header>
             <div class="card-body">
                 <div class='table-responsive'>
-                    <table class="table table-responsive-md table-hover mb-0">
+                    <table class="table table-responsive-md table-bordered table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>Fecha</th>

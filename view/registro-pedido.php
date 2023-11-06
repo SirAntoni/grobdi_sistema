@@ -2,17 +2,17 @@
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header">
-                <h2 class="card-title">Lista de presentaciones</h2>
+                <h2 class="card-title">Lista de pedidos</h2>
             </header>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 text-end">
-                        <button onclick="openModal({opcion:'agregar',modulo:'unidades'})"
-                            class='modal-form btn btn-sm btn-primary mb-3'>Nuevo</button>
+                        <button onclick="openModal({opcion:'agregar',modulo:'categorias'})"
+                            class='modal-form btn btn-sm btn-primary mb-3'>Nuevo Pedido</button>
                     </div>
                 </div>
                 <div class='table-responsive'>
-                    <table id='tablePresentaciones' class="table table-bordered table-responsive-md table-hover mb-0">
+                    <table id='tableCategorias' class="table table-bordered table-responsive-md table-hover mb-0">
                         <thead class='dark'>
                             <tr>
                                 <th width='70px'>Codigo</th>
@@ -22,7 +22,7 @@
                                 <th>Acción</th>
                             </tr>
                         </thead>
-                        <tbody id='table-presentaciones'>
+                        <tbody id='table-categorias'>
                         </tbody>
                     </table>
                 </div>
@@ -34,7 +34,7 @@
 
 <div id="modalForm" class="modal-block modal-block-primary mfp-hide zoom-anim-dialog">
     <section class="card">
-        <form id='formPresentaciones' class='form'>
+        <form id='formCategorias' class='form'>
             <header class="card-header">
                 <h2 class="modalTitle card-title"></h2>
             </header>
@@ -80,7 +80,7 @@
         <footer class="card-footer">
             <div class="row">
                 <div class="col-md-12 text-end">
-                    <form id="formPresentacionesDelete" class='form'>
+                    <form id="formCategoriasDelete" class='form'>
                         <input type="hidden" class='opcion' name='opcion'>
                         <input type="hidden" class='codigo' name='codigo'>
                         <button type='submit' class="btnSubmit btn btn-danger">Eliminar</button>

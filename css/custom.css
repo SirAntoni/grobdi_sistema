@@ -1,1 +1,5 @@
 /* Add here all your CSS customizations */
+
+div:where(.swal2-container) {
+    z-index: 10001 !important;
+}

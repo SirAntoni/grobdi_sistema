@@ -76,9 +76,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-12 mt-3">
-                            <div class="form-group d-flex justify-content-end">
-                                <button class="btn btn-success" type='submit'><i class="fas fa-save me-1"></i>Guardar cambios</button>
+                        <div class="col-md-12 mt-3 ">
+                            <div class="form-group text-right">
+                                <button class="btn btn-success me-1" type='submit'><i class="fas fa-save me-1"></i>Guardar cambios</button>
+                                <button class="btn btn-info"  onclick="history.back(0)">Volver</button>
                             </div>
                         </div>
 

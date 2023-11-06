@@ -173,14 +173,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent">
+                    <li class="nav-parent <?php echo ($view === 'registro-pedido') ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-server" aria-hidden="true"></i>
                             <span>Pedidos</span>
                         </a>
                         <ul class="nav nav-children">
-                            <li>
-                                <a class="nav-link" href="ecommerce-dashboard.html">
+                            <li <?php echo ($view === 'registro-pedido') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=registro-pedido">
                                     Registro
                                 </a>
                             </li>
@@ -191,7 +191,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent <?php echo ($view === 'doctores' || $view === 'detalle_doctor' ) ? 'nav-active nav-expanded':'' ?>">
+                    <li class="nav-parent <?php echo ($view === 'doctores' || $view === 'detalle_doctor' || $view === 'zonas' || $view === 'distritos' || $view === 'visitadores' ) ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-server" aria-hidden="true"></i>
                             <span>Visitas</span>
@@ -217,18 +217,18 @@
                                     Centros salud
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-products-list.html">
+                            <li <?php echo ($view === 'distritos') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link"  href="system?view=distritos">
                                     Distritos
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-products-list.html">
+                            <li <?php echo ($view === 'zonas') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=zonas">
                                     Zonas
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-products-list.html">
+                            <li  <?php echo ($view === 'visitadores') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=visitadores">
                                     Visitador
                                 </a>
                             </li>

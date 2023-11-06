@@ -148,8 +148,17 @@ if($_GET['view'] == '') {
                                 case 'proveedores':
                                     echo '<h2>Proveedores</h2>';
                                     break;
-                                case 'tipo-cambio':
-                                    echo '<h2>Tipo de cambio</h2>';
+                                case 'registro-pedido':
+                                    echo '<h2>Registro de pedidos</h2>';
+                                    break;
+                                case 'zonas':
+                                    echo '<h2>Zonas</h2>';
+                                    break;
+                                case 'distritos':
+                                    echo '<h2>Distritos</h2>';
+                                    break;
+                                case 'visitadores':
+                                    echo '<h2>Visitadores</h2>';
                                     break;
                                 default:
                                     echo '';
@@ -192,8 +201,17 @@ if($_GET['view'] == '') {
                                 case 'proveedores':
                                     echo '<li><span>Proveedores</span></li>';
                                     break;
-                                case 'tipo-cambio':
-                                    echo '<li><span>Tipo de cambio</span></li>';
+                                case 'registro-pedido':
+                                    echo '<li><span>Registro de pedidos</span></li>';
+                                    break;
+                                case 'distritos':
+                                    echo '<li><span>Visitas</span></li><li><span>Distritos</span></li>';
+                                    break;
+                                case 'zonas':
+                                    echo '<li><span>Visitas</span></li><li><span>Zonas</span></li>';
+                                    break;
+                                case 'visitadores':
+                                    echo '<li><span>Visitas</span></li><li><span>Visitadores</span></li>';
                                     break;
                                 default:
                                     echo '';
@@ -269,6 +287,18 @@ if($_GET['view'] == '') {
                             break;
                     case 'detalle-receta':
                         require 'view/detalle-receta.php';
+                            break;
+                    case 'registro-pedido':
+                        require 'view/registro-pedido.php';
+                            break;
+                    case 'zonas':
+                        require 'view/zonas.php';
+                            break;
+                    case 'distritos':
+                        require 'view/distritos.php';
+                            break;
+                    case 'visitadores':
+                        require 'view/visitadores.php';
                             break;
                     default:
                         require 'view/dashboard.php';
@@ -359,6 +389,7 @@ if($_GET['view'] == '') {
     <script src="vendor/nanoscroller/nanoscroller.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.js"></script>
     <script src="vendor/jquery-placeholder/jquery.placeholder.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Specific Page Vendor -->
 
@@ -373,6 +404,8 @@ if($_GET['view'] == '') {
 
     <!-- Theme Initialization Files -->
     <script src="js/theme.init.js"></script>
+    <script src="js/modals.js"></script>
+
 
 </body>
 

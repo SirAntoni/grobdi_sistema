@@ -10,8 +10,14 @@
                 <h2 class="card-title">Lista de clientes</h2>
             </header>
             <div class="card-body">
+            <div class="row">
+                    <div class="col-md-12 text-end">
+                        <button onclick="openModal({opcion:'agregar',modulo:'categorias'})"
+                            class='modal-form btn btn-sm btn-primary mb-3'>Nuevo cliente</button>
+                    </div>
+                </div>
                 <div class='table-responsive'>
-                    <table class="table table-responsive-md table-hover mb-0">
+                    <table class="table table-bordered table-responsive-md table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>#</th>

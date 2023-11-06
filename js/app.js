@@ -20,12 +20,430 @@ $(function() {
     if (params.get('view') === "recetas") listar_recetas(1);
     if (params.get('view') === "detalle-receta") obtener_insumos_receta(params.get('codigo-receta'));
 
-    cargar_unidades();
+    if (params.get('view') === "unidad-medida") {
+        cargar_unidades();
+        store_unidad()
+        delete_unidad()
+    }
+
+    if (params.get('view') === "presentacion") {
+        cargar_presentaciones();
+        store_presentacion();
+        delete_presentacion();
+    }
+
+    if (params.get('view') === "laboratorios") {
+        cargar_laboratorios();
+        store_laboratorio();
+        delete_laboratorio();
+    }
+
+    if (params.get('view') === "categorias") {
+        cargar_categorias();
+        store_categorias();
+        delete_categoria();
+    }
+
+    if (params.get('view') === "visitadores") {
+        cargar_visitadores();
+        store_visitador();
+        delete_visitador();
+    }
+
+    if (params.get('view') === "zonas") {
+        cargar_zonas();
+        cargar_visitadores_form();
+        store_zona();
+        delete_zona();
+    }
 
 });
 
+const store_unidad = function() {
+    $('#formUnidades').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/unidad-medida',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_unidades();
+                    $.magnificPopup.close();
+                    $('#formUnidades').trigger('reset');
+
+                }
+
+
+            }
+        })
+    })
+}
+
+const store_zona = function() {
+    $('#formZonas').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/zonas',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_zonas();
+                    $.magnificPopup.close();
+                    $('#formZonas').trigger('reset');
+
+                }
+
+
+            }
+        })
+    })
+}
+
+const store_visitador = function() {
+    $('#formVisitadores').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/visitadores',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_visitadores();
+                    $.magnificPopup.close();
+                    $('#formVisitadores').trigger('reset');
+
+                }
+
+
+            }
+        })
+    })
+}
+
+const store_presentacion = function() {
+    $('#formPresentaciones').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/presentacion',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_presentaciones();
+                    $.magnificPopup.close();
+                    $('#formPresentaciones').trigger('reset');
+
+                }
+            }
+        })
+    })
+}
+
+const store_categorias = function() {
+    $('#formCategorias').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/categorias',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_categorias();
+                    $.magnificPopup.close();
+                    $('#formCategorias').trigger('reset');
+
+                }
+            }
+        })
+    })
+}
+
+const store_laboratorio = function() {
+    $('#formLaboratorios').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/laboratorios',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_laboratorios();
+                    $.magnificPopup.close();
+                    $('#formLaboratorios').trigger('reset');
+
+                }
+            }
+        })
+    })
+}
+
+const delete_unidad = function() {
+    $('#formUnidadesDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/unidad-medida',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_unidades();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_laboratorio = function() {
+    $('#formLaboratoriosDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/laboratorios',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_laboratorios();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_presentacion = function() {
+    $('#formPresentacionesDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/presentacion',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_presentaciones();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_categoria = function() {
+    $('#formCategoriasDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/categorias',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_categorias();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_visitador = function() {
+    $('#formVisitadoresDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/visitadores',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_visitadores();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_zona = function() {
+    $('#formZonasDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/zonas',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_zonas();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+
 const eliminar_cliente = function(codigo = '') {
-    alert('en construccion');
+    Swal.fire(
+        'Error',
+        'Usted no tiene permisos para esta accion',
+        'error'
+    )
 }
 
 const guardar_cliente = function() {
@@ -42,15 +460,184 @@ const cargar_unidades = function() {
         success: function(response) {
             const data = JSON.parse(response);
             let html = ``;
-            data.map((unidad) => {
-                const estado = (unidad.estado === '1') ? 'si' : 'no';
-                html = html + `<tr> <td>${unidad.codigo}</td><td>${unidad.nombre}</td><td>${unidad.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="">
-                <a href="system?view=detalle-doctor&codigo_doctor=${unidad.fecha_creacion}"><i class="fas fa-pencil-alt"></i></a>
-                <a href="#" class="delete-row" onclick="eliminar_doctor(${unidad["codigo_doctor"]})"><i class="far fa-trash-alt"></i></a>
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((unidad) => {
+                    const estado = (unidad.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${unidad.codigo}</td><td>${unidad.nombre}</td><td>${unidad.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'unidad',id:${unidad.codigo}, posicion: ${position}, tabla: 'tableUnidades'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'unidad',id:${unidad.codigo}, posicion: ${position}, tabla: 'tableUnidades'})"><i class="far fa-trash-alt"></i></a>
             </td></tr>`;
-            })
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='5'>No se encontraron resultados</td></tr>`;
+            }
 
             $("#table-unidad-medida").html(html);
+
+
+
+        }
+    })
+}
+
+const cargar_zonas = function() {
+    $.ajax({
+        url: 'controller/zonas',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((unidad) => {
+                    const estado = (unidad.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${unidad.codigo}</td><td>${unidad.nombre}</td><td class='d-none'>${unidad.visitador}</td><td class='d-none'>${unidad.observacion}</td><td>${unidad.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'zona',id:${unidad.codigo}, posicion: ${position}, tabla: 'tableZonas'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'zona',id:${unidad.codigo}, posicion: ${position}, tabla: 'tableZonas'})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='5'>No se encontraron resultados</td></tr>`;
+            }
+
+            $("#table-zonas").html(html);
+
+
+
+        }
+    })
+}
+
+const cargar_categorias = function() {
+    $.ajax({
+        url: 'controller/categorias',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((categoria) => {
+                    const estado = (categoria.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${categoria.codigo}</td><td>${categoria.nombre}</td><td>${categoria.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'categoria',id:${categoria.codigo}, posicion: ${position}, tabla: 'tableCategorias'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'categoria',id:${categoria.codigo}, posicion: ${position}, tabla: 'tableCategorias'})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='5'>No se encontraron resultados</td></tr>`;
+            }
+
+            $("#table-categorias").html(html);
+
+
+
+        }
+    })
+}
+
+const cargar_presentaciones = function() {
+    $.ajax({
+        url: 'controller/presentacion',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((presentacion) => {
+                    const estado = (presentacion.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${presentacion.codigo}</td><td>${presentacion.nombre}</td><td>${presentacion.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'presentacion',id:${presentacion.codigo}, posicion: ${position}, tabla: 'tablePresentaciones'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'presentacion',id:${presentacion.codigo}, posicion: ${position}, tabla: 'tablePresentaciones'})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='5'>No se encontraron resultados</td></tr>`;
+            }
+            $("#table-presentaciones").html(html);
+
+
+
+        }
+    })
+}
+
+const cargar_laboratorios = function() {
+    $.ajax({
+        url: 'controller/laboratorios',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((laboratorio) => {
+                    const estado = (laboratorio.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${laboratorio.codigo}</td><td>${laboratorio.ruc}</td><td>${laboratorio.nombre}</td><td>${laboratorio.contacto}</td> <td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'laboratorio',id:${laboratorio.codigo}, posicion: ${position}, tabla: 'tableLaboratorios'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'laboratorio',id:${laboratorio.codigo}, posicion: ${position}, tabla: 'tableLaboratorios'})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='6'>No se encontraron resultados</td></tr>`;
+            }
+
+            $("#table-laboratorios").html(html);
+
+
+
+        }
+    })
+}
+
+const cargar_visitadores = function() {
+    $.ajax({
+        url: 'controller/visitadores',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((visitador) => {
+                    const estado = (visitador.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${visitador.codigo}</td><td>${visitador.nombres}</td><td class='d-none'>${visitador.telefono}</td><td class='d-none'>${visitador.correo}</td><td class='d-none'>${visitador.cuota}</td><td class='d-none'>${visitador.observacion}</td><td>${visitador.fecha_creacion}</td><td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'visitador',id:${visitador.codigo}, posicion: ${position}, tabla: 'tableVisitadores'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'visitador',id:${visitador.codigo}, posicion: ${position}, tabla: 'tableVisitadores'})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='6'>No se encontraron resultados</td></tr>`;
+            }
+
+            $("#table-visitadores").html(html);
+
+
+
+        }
+    })
+}
+
+const cargar_visitadores_form = function() {
+    $.ajax({
+        url: 'controller/visitadores',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            if (data.length > 0) {
+                data.map((visitador) => {
+                    html = html + `<option value='${visitador.codigo}'>${visitador.nombres}</option>`;
+                });
+            } else {
+                html = html + `<option value=''>Sin resultados<option>`;
+            }
+
+            $("#visitador").html(html);
+
+
 
         }
     })
@@ -718,7 +1305,7 @@ const listar_clientes = function(pagina = 1) {
             if (pagina === numeroPaginas) next = 'disabled'
 
             let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
-            <a class="page-link ${previous}" href="#" onclick="listar_clientes(${pagina - 1})" aria-label="Previous">
+            <a class="page-link ${previous}" style='cursor:pointer' onclick="listar_clientes(${pagina - 1})" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
@@ -728,28 +1315,28 @@ const listar_clientes = function(pagina = 1) {
 
                 if (pagina < 5) {
                     for (let count = 1; count <= 5; count++) {
-                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes(${count})" >${count}</a></li>`;
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_clientes(${count})" >${count}</a></li>`;
                     }
-                    html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
-                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_clientes(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    html_paginacion += `<li class="page-item"><a class="page-link">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" style='cursor:pointer' onclick="listar_clientes(${numeroPaginas})" >${numeroPaginas}</a></li>`
                 } else {
 
                     let end_limit = parseInt(numeroPaginas) - 5
                     if (pagina > end_limit) {
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_clientes(1)" >1</a></li>`;
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer'  onclick="listar_clientes(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' >...</a></li>`;
                         for (let count = end_limit; count <= numeroPaginas; count++) {
-                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes(${count})" >${count}</a></li>`;
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer'  onclick="listar_clientes(${count})" >${count}</a></li>`;
                         }
                     } else {
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_clientes(1)" >1</a></li>`;
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' onclick="listar_clientes(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' >...</a></li>`;
 
                         for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
-                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes(${count})" >${count}</a></li>`;
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_clientes(${count})" >${count}</a></li>`;
                         }
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
-                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_clientes(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                        html_paginacion += `<li class="page-item"><a class="page-link" >...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" style='cursor:pointer'  onclick="listar_clientes(${numeroPaginas})" >${numeroPaginas}</a></li>`
                     }
 
                 }
@@ -760,7 +1347,7 @@ const listar_clientes = function(pagina = 1) {
 
                 for (let count = 1; count <= numeroPaginas; count++) {
 
-                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes(${count})" >${count}</a></li>`;
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_clientes(${count})" >${count}</a></li>`;
 
                 }
 
@@ -770,7 +1357,7 @@ const listar_clientes = function(pagina = 1) {
 
 
             html_paginacion += `<li class="page-item">
-            <a class="page-link ${next}" href="#" onclick="listar_clientes(${pagina + 1})" aria-label="Next">
+            <a class="page-link ${next}" style='cursor:pointer'  onclick="listar_clientes(${pagina + 1})" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>

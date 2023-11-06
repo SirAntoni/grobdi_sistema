@@ -1,6 +1,6 @@
 <?php
 
-class Laboratorios extends Conectar
+class Zonas extends Conectar
 {
 
     private $db;
@@ -10,28 +10,28 @@ class Laboratorios extends Conectar
         $this->db = Conectar::conexion();
     }
 
-    public function cargar_laboratorios()
+    public function cargar_zonas()
     {
-            $query = "SELECT * FROM laboratorios";
+            $query = "SELECT * FROM zonas";
             $query = $this->db->prepare($query);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function crear_laboratorio($ruc,$nombre,$contacto){
+    public function crear_zona($nombre,$visitador,$observacion){
 
         $response = [
             "status" => "error",
             "message" => "Campos vacios"
         ];
 
-        if(empty($ruc) || empty($nombre) || empty($contacto)) return $response;
+        if(empty($nombre) || empty($visitador) || empty($observacion)) return $response;
 
-        $query = "INSERT INTO laboratorios(ruc,nombre,contacto,estado,fecha_creacion) VALUES(?,?,?,1,now())";
+        $query = "INSERT INTO zonas(nombre,visitador,observacion,estado,fecha_creacion) VALUES(?,?,?,1,now())";
         $query = $this->db->prepare($query);
-        $query->bindValue(1,$ruc);
-        $query->bindValue(2,$nombre);
-        $query->bindValue(3,$contacto);
+        $query->bindValue(1,$nombre);
+        $query->bindValue(2,$visitador);
+        $query->bindValue(3,$observacion);
         $query->execute();
 
         $response = [
@@ -43,19 +43,19 @@ class Laboratorios extends Conectar
 
     }
 
-    public function editar_laboratorio($codigo,$ruc,$nombre,$contacto){
+    public function editar_zona($codigo,$nombre,$visitador,$observacion){
         $response = [
             "status" => "error",
             "message" => "Campos vacios"
         ];
 
-        if(empty($ruc) || empty($nombre) || empty($contacto)) return $response;
+        if(empty($nombre) || empty($visitador) || empty($observacion)) return $response;
 
-        $query = "UPDATE laboratorios SET ruc = ? , nombre = ?, contacto = ? WHERE codigo = ?";
+        $query = "UPDATE zonas SET nombre= ?, visitador = ?, observacion = ? WHERE codigo = ?";
         $query = $this->db->prepare($query);
-        $query->bindValue(1,$ruc);
-        $query->bindValue(2,$nombre);
-        $query->bindValue(3,$contacto);
+        $query->bindValue(1,$nombre);
+        $query->bindValue(2,$visitador);
+        $query->bindValue(3,$observacion);
         $query->bindValue(4,$codigo);
         $query->execute();
 
@@ -68,7 +68,7 @@ class Laboratorios extends Conectar
 
     }
 
-    public function eliminar_laboratorio($codigo){
+    public function eliminar_zona($codigo){
 
         $response = [
             "status" => "error",
@@ -77,7 +77,7 @@ class Laboratorios extends Conectar
 
         if(empty($codigo)) return $response;
 
-        $query = "DELETE FROM laboratorios WHERE codigo = ?";
+        $query = "DELETE FROM zonas WHERE codigo = ?";
         $query = $this->db->prepare($query);
         $query->bindValue(1,$codigo);
         $query->execute();

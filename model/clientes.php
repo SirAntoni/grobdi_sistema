@@ -13,7 +13,7 @@ class Clientes extends Conectar
     public function get_clientes_paginacion($pagina)
     {       
             $pagina = is_null($pagina) ? 1 : (int)$pagina;
-            $regPagina = 20;
+            $regPagina = 10;
             $inicio = ($pagina > 1) ? (($pagina * $regPagina)) - $regPagina : 0;
             
             $registros = "SELECT SQL_CALC_FOUND_ROWS * FROM clientes ORDER BY id DESC LIMIT :inicio,:total";
@@ -43,5 +43,4 @@ class Clientes extends Conectar
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-class Laboratorios extends Conectar
+class Visitadores extends Conectar
 {
 
     private $db;
@@ -10,28 +10,30 @@ class Laboratorios extends Conectar
         $this->db = Conectar::conexion();
     }
 
-    public function cargar_laboratorios()
+    public function cargar_visitadores()
     {
-            $query = "SELECT * FROM laboratorios";
+            $query = "SELECT * FROM visitadores";
             $query = $this->db->prepare($query);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function crear_laboratorio($ruc,$nombre,$contacto){
+    public function crear_visitador($nombre,$telefono,$correo,$cuota,$observacion){
 
         $response = [
             "status" => "error",
             "message" => "Campos vacios"
         ];
 
-        if(empty($ruc) || empty($nombre) || empty($contacto)) return $response;
+        if(empty($nombre) || empty($telefono) || empty($correo)) return $response;
 
-        $query = "INSERT INTO laboratorios(ruc,nombre,contacto,estado,fecha_creacion) VALUES(?,?,?,1,now())";
+        $query = "INSERT INTO visitadores(nombres,telefono,correo,cuota,observacion,estado,fecha_creacion) VALUES(?,?,?,?,?,1,now())";
         $query = $this->db->prepare($query);
-        $query->bindValue(1,$ruc);
-        $query->bindValue(2,$nombre);
-        $query->bindValue(3,$contacto);
+        $query->bindValue(1,$nombre);
+        $query->bindValue(2,$telefono);
+        $query->bindValue(3,$correo);
+        $query->bindValue(4,$cuota);
+        $query->bindValue(5,$observacion);
         $query->execute();
 
         $response = [
@@ -43,20 +45,22 @@ class Laboratorios extends Conectar
 
     }
 
-    public function editar_laboratorio($codigo,$ruc,$nombre,$contacto){
+    public function editar_visitador($codigo,$nombre,$telefono,$correo,$cuota,$observacion){
         $response = [
             "status" => "error",
             "message" => "Campos vacios"
         ];
 
-        if(empty($ruc) || empty($nombre) || empty($contacto)) return $response;
+        if(empty($nombre)) return $response;
 
-        $query = "UPDATE laboratorios SET ruc = ? , nombre = ?, contacto = ? WHERE codigo = ?";
+        $query = "UPDATE visitadores SET nombres = ?, telefono = ?, correo = ?, cuota = ?, observacion = ? WHERE codigo = ?";
         $query = $this->db->prepare($query);
-        $query->bindValue(1,$ruc);
-        $query->bindValue(2,$nombre);
-        $query->bindValue(3,$contacto);
-        $query->bindValue(4,$codigo);
+        $query->bindValue(1,$nombre);
+        $query->bindValue(2,$telefono);
+        $query->bindValue(3,$correo);
+        $query->bindValue(4,$cuota);
+        $query->bindValue(5,$observacion);
+        $query->bindValue(6,$codigo);
         $query->execute();
 
         $response = [
@@ -68,7 +72,7 @@ class Laboratorios extends Conectar
 
     }
 
-    public function eliminar_laboratorio($codigo){
+    public function eliminar_visitador($codigo){
 
         $response = [
             "status" => "error",
@@ -77,7 +81,7 @@ class Laboratorios extends Conectar
 
         if(empty($codigo)) return $response;
 
-        $query = "DELETE FROM laboratorios WHERE codigo = ?";
+        $query = "DELETE FROM visitadores WHERE codigo = ?";
         $query = $this->db->prepare($query);
         $query->bindValue(1,$codigo);
         $query->execute();
