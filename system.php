@@ -148,8 +148,8 @@ if($_GET['view'] == '') {
                                 case 'proveedores':
                                     echo '<h2>Proveedores</h2>';
                                     break;
-                                case 'registro-pedido':
-                                    echo '<h2>Registro de pedidos</h2>';
+                                case 'pedidos':
+                                    echo '<h2>Pedidos</h2>';
                                     break;
                                 case 'zonas':
                                     echo '<h2>Zonas</h2>';
@@ -159,6 +159,18 @@ if($_GET['view'] == '') {
                                     break;
                                 case 'visitadores':
                                     echo '<h2>Visitadores</h2>';
+                                    break;
+                                case 'centros-salud':
+                                    echo '<h2>Centros de salud</h2>';
+                                    break;
+                                case 'registrar-pedido':
+                                    echo '<h2>Registrar pedidos</h2>';
+                                    break;
+                                case 'ventas':
+                                    echo '<h2>Ventas</h2>';
+                                    break;
+                                case 'registrar-venta':
+                                    echo '<h2>Registrar venta</h2>';
                                     break;
                                 default:
                                     echo '';
@@ -212,6 +224,21 @@ if($_GET['view'] == '') {
                                     break;
                                 case 'visitadores':
                                     echo '<li><span>Visitas</span></li><li><span>Visitadores</span></li>';
+                                    break;
+                                case 'centros-salud':
+                                    echo '<li><span>Visitas</span></li><li><span>Centros de salud</span></li>';
+                                    break;
+                                case 'registrar-pedido':
+                                    echo '<li><span>Pedidos</span></li><li><span>Registrar</span></li>';
+                                    break;
+                                case 'pedidos':
+                                    echo '<li><span>Pedidos</span></li>';
+                                    break;
+                                case 'ventas':
+                                    echo '<li><span>Ventas</span></li>';
+                                    break;
+                                case 'registrar-venta':
+                                    echo '<li><span>Ventas</span></li><li><span>Registrar</span></li>';
                                     break;
                                 default:
                                     echo '';
@@ -288,8 +315,8 @@ if($_GET['view'] == '') {
                     case 'detalle-receta':
                         require 'view/detalle-receta.php';
                             break;
-                    case 'registro-pedido':
-                        require 'view/registro-pedido.php';
+                    case 'pedidos':
+                        require 'view/pedidos.php';
                             break;
                     case 'zonas':
                         require 'view/zonas.php';
@@ -299,6 +326,18 @@ if($_GET['view'] == '') {
                             break;
                     case 'visitadores':
                         require 'view/visitadores.php';
+                            break;
+                    case 'centros-salud':
+                        require 'view/centros-salud.php';
+                            break;
+                    case 'registrar-pedido':
+                        require 'view/registrar-pedido.php';
+                            break;
+                    case 'ventas':
+                        require 'view/ventas.php';
+                            break;
+                    case 'registrar-venta':
+                        require 'view/registrar-venta.php';
                             break;
                     default:
                         require 'view/dashboard.php';

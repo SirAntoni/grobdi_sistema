@@ -19,7 +19,7 @@ $(function() {
 
     if (params.get('view') === "recetas") listar_recetas(1);
     if (params.get('view') === "detalle-receta") obtener_insumos_receta(params.get('codigo-receta'));
-
+    if (params.get('view') === "ventas") listar_documentos(1);
     if (params.get('view') === "unidad-medida") {
         cargar_unidades();
         store_unidad()
@@ -57,6 +57,20 @@ $(function() {
         delete_zona();
     }
 
+    if (params.get('view') === "distritos") {
+        cargar_distritos();
+        cargar_zonas_form();
+        store_distrito();
+        delete_distrito();
+    }
+
+    if (params.get('view') === "centros-salud") {
+        listar_centros_salud();
+        cargar_distritos_form();
+        store_centro_salud();
+        delete_centro_salud();
+    }
+
 });
 
 const store_unidad = function() {
@@ -84,6 +98,74 @@ const store_unidad = function() {
                     cargar_unidades();
                     $.magnificPopup.close();
                     $('#formUnidades').trigger('reset');
+
+                }
+
+
+            }
+        })
+    })
+}
+
+const store_centro_salud = function() {
+    $('#formCentrosSalud').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/centros-salud',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    listar_centros_salud();
+                    $.magnificPopup.close();
+                    $('#formCentrosSalud').trigger('reset');
+
+                }
+
+
+            }
+        })
+    })
+}
+
+const store_distrito = function() {
+    $('#formDistritos').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/distritos',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_distritos();
+                    $.magnificPopup.close();
+                    $('#formDistritos').trigger('reset');
 
                 }
 
@@ -287,6 +369,37 @@ const delete_unidad = function() {
     })
 }
 
+const delete_centro_salud = function() {
+    $('#formCentrosSaludDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/centros-salud',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    listar_centros_salud();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+
 const delete_laboratorio = function() {
     $('#formLaboratoriosDelete').submit(function(e) {
         e.preventDefault();
@@ -370,6 +483,36 @@ const delete_categoria = function() {
                         'success'
                     )
                     cargar_categorias();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_distrito = function() {
+    $('#formDistritosDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/distritos',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    cargar_distritos();
                     $.magnificPopup.close();
                 }
             }
@@ -510,6 +653,34 @@ const cargar_zonas = function() {
     })
 }
 
+const cargar_distritos = function() {
+    $.ajax({
+        url: 'controller/distritos',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            if (data.length > 0) {
+                data.map((distrito) => {
+                    const estado = (distrito.estado === '1') ? 'Activo' : 'Inactivo';
+                    html = html + `<tr> <td class='text-center'>${distrito.codigo}</td><td>${distrito.nombre}</td><td class='d-none'>${distrito.zona}</td><td class='d-none'>${distrito.ubigeo}</td><td class='d-none'>${distrito.visitador}</td><td class='d-none'>${distrito.observacion}</td><td>${distrito.fecha_creacion}</td> <td>${estado}</td> <td width='30px' class="text-center">
+                <a href='#' onclick="openModal({opcion:'editar',modulo:'distrito',id:${distrito.codigo}, posicion: ${position}, tabla: 'tableDistritos'})"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'distrito',id:${distrito.codigo}, posicion: ${position}, tabla: 'tableDistritos'})"><i class="far fa-trash-alt"></i></a>
+            </td></tr>`;
+                    position++
+                })
+            } else {
+                html = html + `<tr><td class='text-center' colspan='5'>No se encontraron resultados</td></tr>`;
+            }
+
+            $("#table-distritos").html(html);
+
+
+
+        }
+    })
+}
+
 const cargar_categorias = function() {
     $.ajax({
         url: 'controller/categorias',
@@ -637,6 +808,48 @@ const cargar_visitadores_form = function() {
 
             $("#visitador").html(html);
 
+
+
+        }
+    })
+}
+
+const cargar_zonas_form = function() {
+    $.ajax({
+        url: 'controller/zonas',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            if (data.length > 0) {
+                data.map((zona) => {
+                    html = html + `<option value='${zona.codigo}'>${zona.nombre}</option>`;
+                });
+            } else {
+                html = html + `<option value=''>Sin resultados<option>`;
+            }
+
+            $("#zona").html(html);
+
+
+        }
+    })
+}
+
+const cargar_distritos_form = function() {
+    $.ajax({
+        url: 'controller/distritos',
+        success: function(response) {
+            const data = JSON.parse(response);
+            let html = ``;
+            if (data.length > 0) {
+                data.map((distrito) => {
+                    html = html + `<option value='${distrito.codigo}'>${distrito.nombre}</option>`;
+                });
+            } else {
+                html = html + `<option value=''>Sin resultados<option>`;
+            }
+
+            $("#distrito").html(html);
 
 
         }
@@ -1365,6 +1578,102 @@ const listar_clientes = function(pagina = 1) {
 
             $("#paginacion").html(html_paginacion);
             $("#table-clientes").html(html);
+        }
+    });
+};
+
+const listar_centros_salud = function(pagina = 1) {
+    $.ajax({
+        url: `controller/centros-salud.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            data.forEach((centro) => {
+
+
+                const estado = (centro['estado']) ? 'Activo' : 'Inactivo';
+
+                html =
+                    html +
+                    `<tr> <td>${centro["codigo"]}</td><td>${centro["nombre"]}</td><td class='d-none'>${centro["distrito"]}</td> <td class='d-none'>${centro["observacion"]}</td><td>${estado}</td><td width='30px' class="">
+                            <a href="#" onclick="openModal({opcion:'editar',modulo:'centros de salud',id:${centro["distrito"]}, posicion: ${position}, tabla: 'tableCentrosSalud'})"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'centros de salud',id:${centro["codigo"]}, posicion: ${position}, tabla: 'tableCentrosSalud'})""><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+
+                position++;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" style='cursor:pointer' onclick="listar_centros_salud(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer'  onclick="listar_centros_salud(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' >...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer'  onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' >...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" >...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" style='cursor:pointer'  onclick="listar_centros_salud(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" style='cursor:pointer'  onclick="listar_centros_salud(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-centros-salud").html(html);
         }
     });
 };

@@ -1,6 +1,6 @@
 <?php
 
-class Zonas extends Conectar
+class Distritos extends Conectar
 {
 
     private $db;
@@ -10,28 +10,28 @@ class Zonas extends Conectar
         $this->db = Conectar::conexion();
     }
 
-    public function cargar_zonas()
+    public function cargar_distritos()
     {
-            $query = "SELECT * FROM zonas";
+            $query = "SELECT * FROM distritos";
             $query = $this->db->prepare($query);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function crear_zona($nombre,$visitador,$observacion){
+    public function crear_distrito($nombre,$zona,$ubigeo){
 
         $response = [
             "status" => "error",
             "message" => "Campos vacios"
         ];
 
-        if(empty($nombre) || empty($visitador) || empty($observacion)) return $response;
+        if(empty($nombre) || empty($zona) || empty($ubigeo)) return $response;
 
-        $query = "INSERT INTO zonas(nombre,visitador,observacion,estado,fecha_creacion) VALUES(?,?,?,1,now())";
+        $query = "INSERT INTO distritos(nombre,zona,ubigeo,estado,fecha_creacion) VALUES(?,?,?,1,now())";
         $query = $this->db->prepare($query);
         $query->bindValue(1,$nombre);
-        $query->bindValue(2,$visitador);
-        $query->bindValue(3,$observacion);
+        $query->bindValue(2,$zona);
+        $query->bindValue(3,$ubigeo);
         $query->execute();
 
         $response = [
@@ -43,19 +43,19 @@ class Zonas extends Conectar
 
     }
 
-    public function editar_zona($codigo,$nombre,$visitador = '',$observacion){
+    public function editar_distrito($codigo,$nombre,$zona,$ubigeo){
         $response = [
             "status" => "error",
             "message" => "Campos vacios"
         ];
 
-        if(empty($nombre) || empty($observacion)) return $response;
+        if(empty($nombre) || empty($zona) || empty($ubigeo)) return $response;
 
-        $query = "UPDATE zonas SET nombre= ?, visitador = ?, observacion = ? WHERE codigo = ?";
+        $query = "UPDATE distritos SET nombre = ?, zona = ?, ubigeo = ? WHERE codigo = ?";
         $query = $this->db->prepare($query);
         $query->bindValue(1,$nombre);
-        $query->bindValue(2,$visitador);
-        $query->bindValue(3,$observacion);
+        $query->bindValue(2,$zona);
+        $query->bindValue(3,$ubigeo);
         $query->bindValue(4,$codigo);
         $query->execute();
 
@@ -68,7 +68,7 @@ class Zonas extends Conectar
 
     }
 
-    public function eliminar_zona($codigo){
+    public function eliminar_distrito($codigo){
 
         $response = [
             "status" => "error",
@@ -77,7 +77,7 @@ class Zonas extends Conectar
 
         if(empty($codigo)) return $response;
 
-        $query = "DELETE FROM zonas WHERE codigo = ?";
+        $query = "DELETE FROM distritos WHERE codigo = ?";
         $query = $this->db->prepare($query);
         $query->bindValue(1,$codigo);
         $query->execute();

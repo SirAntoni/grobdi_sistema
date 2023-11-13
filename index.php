@@ -14,7 +14,7 @@ if(isset($_SESSION['usuario'])){
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>INICIAR SESIÓN | SISTEMA DE GESTION GROBDI | </title>
+    <title>INICIAR SESIÓN | SISTEMA DE GESTION GROBDI </title>
 
 
     <meta name="keywords" content="HTML5 Admin Template" />

@@ -2,39 +2,65 @@
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header">
-                <h2 class="card-title">Lista de pedidos</h2>
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div>
+
+                <h2 class="card-title">Lista de centros de salud</h2>
             </header>
             <div class="card-body">
-                <div class="row">
+            <div class="row">
                     <div class="col-md-12 text-end">
-                        <button onclick="openModal({opcion:'agregar',modulo:'categorias'})"
-                            class='modal-form btn btn-sm btn-primary mb-3'>Nuevo Pedido</button>
+                        <button onclick="openModal({opcion:'agregar',modulo:'centros de salud'})"
+                            class='modal-form btn btn-sm btn-primary mb-3'>Nuevo centro de salud</button>
                     </div>
                 </div>
                 <div class='table-responsive'>
-                    <table id='tableCategorias' class="table table-bordered table-responsive-md table-hover mb-0">
-                        <thead class='dark'>
+                    <table id='tableCentrosSalud' class="table table-bordered table-responsive-md table-hover mb-0">
+                        <thead>
                             <tr>
-                                <th width='70px'>Codigo</th>
+                                <th>#</th>
                                 <th>Nombre</th>
-                                <th>Fecha</th>
+                                <th class='d-none'>Distrito</th>
+                                <th class='d-none'>Observacion</th>
                                 <th>Estado</th>
                                 <th>Acción</th>
                             </tr>
                         </thead>
-                        <tbody id='table-categorias'>
+                        <tbody id='table-centros-salud'>
+                            <tr>
+                                <td colspan='7' class='text-center'>Cargando...</td>
+                            </tr>
                         </tbody>
                     </table>
+                    
                 </div>
+                <nav class='mt-4' id='paginacion'>
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
             </div>
         </section>
     </div>
 </div>
 
-
 <div id="modalForm" class="modal-block modal-block-primary mfp-hide zoom-anim-dialog">
     <section class="card">
-        <form id='formCategorias' class='form'>
+        <form id='formCentrosSalud' class='form'>
             <header class="card-header">
                 <h2 class="modalTitle card-title"></h2>
             </header>
@@ -46,6 +72,16 @@
                 <div class="form-group mb-2">
                     <label for="nombre">Nombre</label>
                     <input type="text" name='nombre' class="form-control" id="nombre" placeholder="Nombre">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="distrito">Distrito</label>
+                    <select class='form-control' name="distrito" id="distrito">
+                        <option value="">Selecciona una opcion.</option>
+                    </select>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="observacion">Observacion</label>
+                    <input type="text" name='observacion' class="form-control" id="observacion" placeholder="Observacion">
                 </div>
 
             </div>
@@ -80,7 +116,7 @@
         <footer class="card-footer">
             <div class="row">
                 <div class="col-md-12 text-end">
-                    <form id="formCategoriasDelete" class='form'>
+                    <form id="formCentrosSaludDelete" class='form'>
                         <input type="hidden" class='opcion' name='opcion'>
                         <input type="hidden" class='codigo' name='codigo'>
                         <button type='submit' class="btnSubmit btn btn-danger">Eliminar</button>

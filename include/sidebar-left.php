@@ -107,14 +107,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent">
+                    <li class="nav-parent <?php echo ($view === 'ventas' || $view === 'registrar-venta') ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-menu" aria-hidden="true"></i>
                             <span>Movimientos</span>
                         </a>
                         <ul class="nav nav-children">
-                            <li>
-                                <a class="nav-link" href="ecommerce-dashboard.html">
+                            <li <?php echo ($view === 'ventas' || $view === 'registrar-venta') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link"  href="system?view=ventas">
                                     Ventas
                                 </a>
                             </li>
@@ -173,14 +173,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent <?php echo ($view === 'registro-pedido') ? 'nav-active nav-expanded':'' ?>">
+                    <li class="nav-parent <?php echo ($view === 'pedidos' || $view === 'registrar-pedido') ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-server" aria-hidden="true"></i>
                             <span>Pedidos</span>
                         </a>
                         <ul class="nav nav-children">
-                            <li <?php echo ($view === 'registro-pedido') ? 'class="nav-active"' : ''; ?>>
-                                <a class="nav-link" href="system?view=registro-pedido">
+                            <li <?php echo ($view === 'pedidos' || $view === 'registrar-pedido') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=pedidos">
                                     Registro
                                 </a>
                             </li>
@@ -191,7 +191,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-parent <?php echo ($view === 'doctores' || $view === 'detalle_doctor' || $view === 'zonas' || $view === 'distritos' || $view === 'visitadores' ) ? 'nav-active nav-expanded':'' ?>">
+                    <li class="nav-parent <?php echo ($view === 'doctores' || $view === 'detalle_doctor' || $view === 'zonas' || $view === 'distritos' || $view === 'visitadores' || $view === 'centros-salud' ) ? 'nav-active nav-expanded':'' ?>">
                         <a class="nav-link" href="#">
                             <i class="bx bx-server" aria-hidden="true"></i>
                             <span>Visitas</span>
@@ -212,8 +212,8 @@
                                     Doctores anulados
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="ecommerce-products-list.html">
+                            <li <?php echo ($view === 'centros-salud') ? 'class="nav-active"' : ''; ?>>
+                                <a class="nav-link" href="system?view=centros-salud">
                                     Centros salud
                                 </a>
                             </li>

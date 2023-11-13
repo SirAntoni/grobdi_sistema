@@ -38,6 +38,15 @@ function openModal(data) {
                 $("#nombre").val(datos[1])
                 $("#visitador").val(datos[2])
                 $("#observacion").val(datos[3])
+            } else if (modulo === 'distrito') {
+                $(".codigo").val(datos[0])
+                $("#nombre").val(datos[1])
+                $("#zona").val(datos[2])
+                $("#ubigeo").val(datos[3])
+            } else if (modulo === 'centros de salud') {
+                $(".codigo").val(datos[0])
+                $("#nombre").val(datos[1])
+                $("#observacion").val(datos[3])
             }
             break;
         case 'eliminar':
