@@ -7,6 +7,16 @@ $recetas = new Recetas();
 $pagina = 1;
 $option = '';
 $codigo_interno_principal = '';
+$cantPaginas = '';
+$term ='';
+
+if(isset($_GET["term"])){
+    $term = $_GET["term"];
+}
+
+if(isset($_GET["cantPaginas"])){
+    $cantPaginas = $_GET["cantPaginas"];
+}
 
 if(isset($_GET["pagina"])){
     $pagina = $_GET["pagina"];
@@ -26,7 +36,7 @@ switch($option){
         echo json_encode($recetas->get_insumos_receta($codigo_interno_principal));
         break;
     default:
-        echo json_encode($recetas->get_recetas_paginacion($pagina));
+        echo json_encode($recetas->get_recetas_paginacion($pagina,$cantPaginas,$term));
         break;
 }
 

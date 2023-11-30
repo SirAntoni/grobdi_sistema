@@ -8,10 +8,81 @@ function openModal(data) {
         type: 'inline'
     }
 
-    switch (opcion) {
+    if (opcion === 'listarDoctores') {
+        items = {
+            src: '#modalListarDoctores',
+            type: 'inline'
+        }
+    } else if (opcion === 'listarClientes') {
+        items = {
+            src: '#modalListarClientes',
+            type: 'inline'
+        }
+    } else if (opcion === 'datosEnvio') {
+        items = {
+            src: '#modalDatosEnvio',
+            type: 'inline'
+        }
+    } else if (opcion === 'agregarDelivery') {
+        items = {
+            src: '#modalDelivery',
+            type: 'inline'
+        }
+    } else if (opcion === 'agregarBolsa') {
+        items = {
+            src: '#modalBolsa',
+            type: 'inline'
+        }
+    } else if (opcion === 'agregarItem') {
+        items = {
+            src: '#modalItems',
+            type: 'inline'
+        }
+    }
+
+    if (modulo)
+
+        switch (opcion) {
         case 'agregar':
             titulo = `Registrar ${modulo}`;
             btnText = `Registrar`;
+            break;
+        case 'listarDoctores':
+            titulo = "Listar Doctores";
+            break;
+        case 'listarClientes':
+            titulo = "Listar Clientes";
+            break;
+        case 'datosEnvio':
+            titulo = "Datos para el envio";
+            btnText = `Guardar`;
+            break;
+        case 'agregarDelivery':
+            titulo = "Agregar Delivery";
+            break;
+        case 'agregarBolsa':
+            titulo = "Agregar Bolsa";
+            break;
+        case 'agregarItem':
+            titulo = "Agregar Item";
+            break;
+        case 'obtenerDoctor':
+            datos = obtenerDataTable(tabla, posicion)
+            console.log(datos);
+            $("#doctor").val(datos[1])
+            $("#telefono_doctor").val(datos[4])
+            $("#telefono_asistente").val(datos[5])
+            $.magnificPopup.close();
+            return;
+            break;
+        case 'obtenerCliente':
+            datos = obtenerDataTable(tabla, posicion)
+            console.log(datos);
+            $("#nombre_cliente").val(datos[1])
+            $("#telefono_cliente").val(datos[2])
+            $("#numero_documento").val(datos[3])
+            $.magnificPopup.close();
+            return;
             break;
         case 'editar':
             titulo = `Editar ${modulo}`;

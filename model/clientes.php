@@ -10,16 +10,22 @@ class Clientes extends Conectar
         $this->db = Conectar::conexion();
     }
 
-    public function get_clientes_paginacion($pagina)
+    public function get_clientes_paginacion($pagina,$cantPaginas = '', $term = '')
     {       
             $pagina = is_null($pagina) ? 1 : (int)$pagina;
-            $regPagina = 10;
+            $regPagina = ($cantPaginas === '') ? 15:$cantPaginas;
             $inicio = ($pagina > 1) ? (($pagina * $regPagina)) - $regPagina : 0;
-            
-            $registros = "SELECT SQL_CALC_FOUND_ROWS * FROM clientes ORDER BY id DESC LIMIT :inicio,:total";
-            $registros = $this->db->prepare($registros);
-            $registros->bindParam(':inicio',$inicio,PDO::PARAM_INT);
-            $registros->bindParam(':total',$regPagina,PDO::PARAM_INT);
+            if($term == ''){
+                $registros = "SELECT SQL_CALC_FOUND_ROWS * FROM clientes ORDER BY id DESC LIMIT :inicio,:total";
+                $registros = $this->db->prepare($registros);
+                $registros->bindParam(':inicio',$inicio,PDO::PARAM_INT);
+                $registros->bindParam(':total',$regPagina,PDO::PARAM_INT);
+            }else{
+                $registros = "SELECT SQL_CALC_FOUND_ROWS * FROM clientes WHERE nombre_cliente LIKE '%".$term."%' ORDER BY id DESC LIMIT :inicio,:total";
+                $registros = $this->db->prepare($registros);
+                $registros->bindParam(':inicio',$inicio,PDO::PARAM_INT);
+                $registros->bindParam(':total',$regPagina,PDO::PARAM_INT);
+            }
             $registros->execute();
             $registros = $registros->fetchAll(PDO::FETCH_ASSOC);
 
