@@ -80,9 +80,81 @@ $(function() {
         buscarItem();
         registrar_pedidos();
         guardarDatosEnvio();
+        cargar_items_pedido();
     }
 
 });
+
+function keyCantidad(event, options) {
+    const { position, table } = options
+
+    let item = obtenerDataTable(table, position)
+    let itemParsed = {
+        sku: item[0],
+        producto: item[1],
+        precioVenta: parseFloat(item[3]),
+        cantidad: parseFloat(item[2]),
+        subtotal: parseFloat(item[3]) * parseFloat(item[2])
+    }
+
+    let arrayItems = localStorage.getItem('datosItems');
+
+    if (arrayItems !== null) {
+        arrayItems = JSON.parse(arrayItems)
+
+        let elementoExistente = arrayItems.find(item => item.sku === itemParsed.sku && item.producto === itemParsed.producto)
+
+        if (elementoExistente) {
+            let indice = arrayItems.findIndex(item => item.sku === itemParsed.sku && item.producto === itemParsed.producto);
+
+            arrayItems.splice(indice, 1, itemParsed);
+
+        } else {
+            arrayItems.push(itemParsed)
+        }
+
+
+        arrayItems = JSON.stringify(arrayItems)
+        localStorage.setItem('datosItems', arrayItems)
+
+    } else {
+        let arrayItems = []
+        arrayItems.push(itemParsed)
+        arrayItems = JSON.stringify(arrayItems)
+        localStorage.setItem('datosItems', arrayItems)
+    }
+    setTimeout(function() {
+        event.target.focus(); // Establecer el foco nuevamente en el input después de un breve retraso
+    }, 0);
+    cargar_items_pedido();
+}
+
+const cargar_items_pedido = function() {
+    const items = JSON.parse(localStorage.getItem('datosItems'));
+    let html = ``
+    let position = parseInt(1)
+    if (items !== null) {
+        items.map(item => {
+            html = html + `<tr>
+            <td class="vertical-align">${item.sku}</td>
+            <td class="vertical-align">${item.producto}</td>
+            <td class="vertical-align"><input type="text" id="cantidad-${position}" onInput="keyCantidad(event,{position:${position},table:'tableItemsPedido'})" width='10' value='${item.cantidad}' class='form-control'></td>
+            <td class="vertical-align"><input type="text" id="precio-${position}" onInput="keyCantidad(event,{position:${position},table:'tableItemsPedido'})" width='10' value='${item.precioVenta}' class='form-control'></td>
+            <td class="vertical-align text-center">${item.subtotal}</td>
+            <td class='text-center vertical-align'><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+        </tr>`
+            position++
+        })
+    } else {
+        html = html + `<tr><td colspan="6" class='text-center'>No hay items seleccionados.</td></tr>`
+
+    }
+
+
+    $("#table-items-pedido").html(html)
+
+
+}
 
 const guardarDatosEnvio = function() {
     $("#formDatosEnvio").submit(function(e) {
@@ -127,7 +199,6 @@ const buscarDoctor = function() {
 
     $("#buscarDoctor").on('keydown', function(e) {
         const term = $(this).val();
-        console.log(term)
         listar_doctores_pedidos(1, 5, term);
     })
 }
@@ -669,7 +740,6 @@ const guardar_cliente = function() {
     $("#formEditarClientes").submit(function(e) {
         e.preventDefault();
         const data = $(this).serialize();
-        console.log(data);
     })
 }
 
@@ -948,7 +1018,6 @@ const obtener_insumos_receta = function(codigo_receta = '') {
 
             const data = JSON.parse(response)
             let html = ``;
-            console.log(data);
             data.forEach((unidad) => {
                 html = html +
                     `<tr> <td>${unidad["codigo_sku_insumo"]}</td><td>${unidad["articulo"]}</td><td>${unidad["cantidad"]}</td> <td>${unidad["unidad_medida"]}</td> <td width='30px' class="">
@@ -1007,7 +1076,6 @@ const obtener_doctor = function(codigo_doctor = '') {
         data: body,
         success: function(response) {
             const data = JSON.parse(response)
-            console.log(data)
             $("#codigo_doctor").val(data.codigo_doctor)
             $("#nombre_doctor").val(data.nombre_doctor)
             $("#apellido_doctor").val(data.apellido_doctor)
@@ -1223,8 +1291,6 @@ const listar_clientes_pedidos = function(pagina = 1, cantPaginas = 0, term = '')
             const { data, numeroPaginas } = JSON.parse(response);
             let html = ``;
             let position = parseInt(1)
-
-            console.log(data)
             data.forEach((cliente) => {
                 const documento = cliente["numero_documento"] || ''
                 html =
@@ -1316,12 +1382,14 @@ const listar_recetas_pedidos = function(pagina = 1, cantPaginas = 0, term = '') 
         success: function(response) {
             const { data, numeroPaginas } = JSON.parse(response);
             let html = ``;
+            let position = parseInt(1)
             data.forEach((unidad) => {
                 html =
                     html +
-                    `<tr> <td>${unidad["codigo_sku_principal"]}</td><td>${unidad["articulo"]}</td><td>${unidad["cantidad"]}</td><td>${unidad["precio1"]}</td><td>${unidad["precio1"]}</td><td width='30px' class="text-center">
-                            <a href="system?view=detalle-doctor&codigo_doctor=${unidad["codigo_cliente"]}"><i class="fas fa-check-circle"></i></a>
+                    `<tr> <td>${unidad["codigo_sku_principal"]}</td><td>${unidad["articulo"]}</td><td>${unidad["cantidad"]}</td><td><input type="number" name="precio" id="precio" value="${unidad["precio1"]}" class="form-control"></td><td><input type="number" name="cantidad" id="cantidad" value="0" class="form-control"></td><td width='30px' class="text-center">
+                            <a href="#" onclick="openModal({opcion:'obtenerItem',modulo:'pedidos',id:${unidad["codigo_sku_principal"]}, posicion: ${position}, tabla: 'tableItems'})"><i class="fas fa-check-circle"></i></a>
                         </td></tr>`;
+                position++
             });
 
 
@@ -1333,7 +1401,7 @@ const listar_recetas_pedidos = function(pagina = 1, cantPaginas = 0, term = '') 
             if (pagina === numeroPaginas) next = 'disabled'
 
             let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
-            <a class="page-link ${previous}" href="#" onclick="listar_clientes_pedidos(${pagina - 1},5,'${term}')" aria-label="Previous">
+            <a class="page-link ${previous}" href="#" onclick="listar_recetas_pedidos(${pagina - 1},5,'${term}')" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
@@ -1343,28 +1411,28 @@ const listar_recetas_pedidos = function(pagina = 1, cantPaginas = 0, term = '') 
 
                 if (pagina < 5) {
                     for (let count = 1; count <= 5; count++) {
-                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes_pedidos(${count},5,'${term}')" >${count}</a></li>`;
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas_pedidos(${count},5,'${term}')" >${count}</a></li>`;
                     }
                     html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
-                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_clientes_pedidos(${numeroPaginas},5,'${term}')" >${numeroPaginas}</a></li>`
+                    html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_recetas_pedidos(${numeroPaginas},5,'${term}')" >${numeroPaginas}</a></li>`
                 } else {
 
                     let end_limit = parseInt(numeroPaginas) - 5
                     if (pagina > end_limit) {
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_clientes_pedidos(1,5,'${term}')" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_recetas_pedidos(1,5,'${term}')" >1</a></li>`;
                         html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
                         for (let count = end_limit; count <= numeroPaginas; count++) {
-                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes_pedidos(${count},5,'${term}')" >${count}</a></li>`;
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas_pedidos(${count},5,'${term}')" >${count}</a></li>`;
                         }
                     } else {
-                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_clientes_pedidos(1,5,'${term}')" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" href="#" onclick="listar_recetas_pedidos(1,5,'${term}')" >1</a></li>`;
                         html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
 
                         for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
-                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes_pedidos(${count},5,'${term}')" >${count}</a></li>`;
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas_pedidos(${count},5,'${term}')" >${count}</a></li>`;
                         }
                         html_paginacion += `<li class="page-item"><a class="page-link" href="#">...</a></li>`;
-                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_clientes_pedidos(${numeroPaginas},5,'${term}')" >${numeroPaginas}</a></li>`
+                        html_paginacion += ` <li class="page-item"><a class="page-link" href="#" onclick="listar_recetas_pedidos(${numeroPaginas},5,'${term}')" >${numeroPaginas}</a></li>`
                     }
 
                 }
@@ -1375,7 +1443,7 @@ const listar_recetas_pedidos = function(pagina = 1, cantPaginas = 0, term = '') 
 
                 for (let count = 1; count <= numeroPaginas; count++) {
 
-                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_clientes_pedidos(${count},5,'${term}')" >${count}</a></li>`;
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" href="#" onclick="listar_recetas_pedidos(${count},5,'${term}')" >${count}</a></li>`;
 
                 }
 
@@ -1385,7 +1453,7 @@ const listar_recetas_pedidos = function(pagina = 1, cantPaginas = 0, term = '') 
 
 
             html_paginacion += `<li class="page-item">
-            <a class="page-link ${next}" href="#" onclick="listar_clientes_pedidos(${pagina + 1},5,'${term}')" aria-label="Next">
+            <a class="page-link ${next}" href="#" onclick="listar_recetas_pedidos(${pagina + 1},5,'${term}')" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
@@ -2043,8 +2111,6 @@ const listar_documentos = function(pagina = 1) {
         success: function(response) {
             const { data, numeroPaginas } = JSON.parse(response);
             let html = ``;
-
-            console.log(data)
 
             data.forEach((unidad) => {
 

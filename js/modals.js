@@ -84,6 +84,48 @@ function openModal(data) {
             $.magnificPopup.close();
             return;
             break;
+        case 'obtenerItem':
+            let item = obtenerDataTable(tabla, posicion)
+
+            let itemParsed = {
+                sku: item[0],
+                producto: item[1],
+                precioVenta: item[3],
+                cantidad: item[4],
+                subtotal: parseFloat(item[3]) * parseFloat(item[4])
+            }
+
+            let arrayItems = localStorage.getItem('datosItems');
+
+            if (arrayItems !== null) {
+                arrayItems = JSON.parse(arrayItems)
+
+                let elementoExistente = arrayItems.find(item => item.sku === itemParsed.sku && item.producto === itemParsed.producto)
+
+                if (elementoExistente) {
+                    let indice = arrayItems.findIndex(item => item.sku === itemParsed.sku && item.producto === itemParsed.producto);
+
+                    arrayItems.splice(indice, 1, itemParsed);
+
+                } else {
+                    arrayItems.push(itemParsed)
+                }
+
+
+                arrayItems = JSON.stringify(arrayItems)
+                localStorage.setItem('datosItems', arrayItems)
+
+            } else {
+                let arrayItems = []
+                arrayItems.push(itemParsed)
+                arrayItems = JSON.stringify(arrayItems)
+                localStorage.setItem('datosItems', arrayItems)
+            }
+
+            cargar_items_pedido();
+            $.magnificPopup.close();
+            return;
+            break;
         case 'editar':
             titulo = `Editar ${modulo}`;
             btnText = `Guardar`;
@@ -164,7 +206,12 @@ function obtenerDataTable(tabla, posicion) {
 
     for (let i = 0; i < len - 1; i++) {
 
-        data.push(cells[i].textContent)
+        if (cells[i].textContent !== '') {
+            data.push(cells[i].textContent)
+        } else {
+            data.push(cells[i].children[0].value)
+        }
+
 
     }
 

@@ -140,7 +140,7 @@
                     <div class="col-md-12">
                         <h3>Detalle pedido</h3>
                         <div class='table-responsive'>
-                            <table id='tableDistritos'
+                            <table id='tableItemsPedido'
                                 class="table table-bordered table-responsive-md table-hover mb-0">
                                 <thead class='dark'>
                                     <tr class='text-center'>
@@ -152,39 +152,7 @@
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1002063</td>
-                                        <td>GOMITAS DE ZINC 40MG VIT C 100MG VIT D31000 UI</td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td class='text-center'><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1000746</td>
-                                        <td>GOMITAS DE ZINC 30 MG + MELATONINA 3MG- VITAMINA D3 1000 UI</td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td class='text-center'><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1000331</td>
-                                        <td>DELIVERY LIMA</td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td class='text-center'><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1000746</td>
-                                        <td>BOLSA 10X15X2 LOGO GRANDE</td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td><input type="number" width='10' value='0' class='form-control'></td>
-                                        <td class='text-center'><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                    </tr>
+                                <tbody id="table-items-pedido">
                                 </tbody>
                             </table>
                         </div>
@@ -531,7 +499,7 @@
                 </div>
             </div>
             <div class='table-responsive'>
-                <table class="table table-responsive-md table-hover mb-0 table-bordered">
+                <table id="tableItems" class="table table-responsive-md table-hover mb-0 table-bordered">
                     <thead>
                         <tr>
                             <th>SKU</th>
