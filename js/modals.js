@@ -160,6 +160,19 @@ function openModal(data) {
                 $(".codigo").val(datos[0])
                 $("#nombre").val(datos[1])
                 $("#observacion").val(datos[3])
+            } else if (modulo === 'proveedor') {
+                console.log(datos)
+                $(".id").val(datos[0])
+                $("#ruc").val(datos[1])
+                $("#razon_social").val(datos[2])
+                $("#direccion").val(datos[3])
+                $("#correo").val(datos[4])
+                $("#correo_cpe").val(datos[5])
+                $("#telefono1").val(datos[6])
+                $("#telefono2").val(datos[7])
+                $("#persona_contacto").val(datos[8])
+                $("#observacion").val(datos[9])
+                $("#estado").val(datos[10])
             }
             break;
         case 'eliminar':

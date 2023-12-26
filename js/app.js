@@ -83,6 +83,12 @@ $(function() {
         cargar_items_pedido();
     }
 
+    if (params.get('view') === "proveedores") {
+        listar_proveedores();
+        store_proveedores();
+        delete_proveedor();
+    }
+
 });
 
 function keyCantidad(event, options) {
@@ -279,6 +285,40 @@ const store_centro_salud = function() {
                     listar_centros_salud();
                     $.magnificPopup.close();
                     $('#formCentrosSalud').trigger('reset');
+
+                }
+
+
+            }
+        })
+    })
+}
+
+const store_proveedores = function() {
+    $('#formProveedores').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/proveedores',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data);
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    listar_proveedores();
+                    $.magnificPopup.close();
+                    $('#formProveedores').trigger('reset');
 
                 }
 
@@ -539,6 +579,36 @@ const delete_centro_salud = function() {
                         'success'
                     )
                     listar_centros_salud();
+                    $.magnificPopup.close();
+                }
+            }
+        })
+    })
+}
+
+const delete_proveedor = function() {
+    $('#formProveedoresDelete').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize()
+        $.ajax({
+            url: 'controller/proveedores',
+            method: 'POST',
+            data: data,
+            success: function(data) {
+                const response = JSON.parse(data)
+                if (response.status === 'error') {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        response.status,
+                        response.message,
+                        'success'
+                    )
+                    listar_proveedores();
                     $.magnificPopup.close();
                 }
             }
@@ -2016,7 +2086,7 @@ const listar_centros_salud = function(pagina = 1) {
             const { data, numeroPaginas } = JSON.parse(response);
             let html = ``;
             let position = parseInt(1)
-            data.forEach((centro) => {
+            data.forEach((proveedor) => {
 
 
                 const estado = (centro['estado']) ? 'Activo' : 'Inactivo';
@@ -2100,6 +2170,102 @@ const listar_centros_salud = function(pagina = 1) {
 
             $("#paginacion").html(html_paginacion);
             $("#table-centros-salud").html(html);
+        }
+    });
+};
+
+const listar_proveedores = function(pagina = 1) {
+    $.ajax({
+        url: `controller/proveedores.php?pagina=${pagina}`,
+        method: "GET",
+        success: function(response) {
+            const { data, numeroPaginas } = JSON.parse(response);
+            let html = ``;
+            let position = parseInt(1)
+            data.forEach((proveedor) => {
+
+
+                const estado = (proveedor['estado'] === "1") ? 'Activo' : 'Inactivo';
+
+                html =
+                    html +
+                    `<tr> <td class='text-center'>${proveedor["id"]}</td><td>${proveedor["ruc"]}</td><td>${proveedor["razon_social"]}</td><td class='d-none'>${proveedor["direccion"]}</td><td class='d-none'>${proveedor["correo"]}</td><td class='d-none'>${proveedor["correo_cpe"]}</td><td >${proveedor["telefono1"]}</td> <td class='d-none'>${proveedor["telefono2"]}</td><td>${proveedor["persona_contacto"]}</td><td class='d-none'>${proveedor["observacion"]}</td><td>${estado}</td><td width='30px' class="">
+                            <a href="#" onclick="openModal({opcion:'editar',modulo:'proveedor',id:${proveedor["id"]}, posicion: ${position}, tabla: 'tableProveedores'})"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" class="delete-row" onclick="openModal({opcion:'eliminar',modulo:'proveedor',id:${proveedor["id"]}, posicion: ${position}, tabla: 'tableProveedores'})""><i class="far fa-trash-alt"></i></a>
+                        </td></tr>`;
+
+                position++;
+            });
+
+
+
+            let previous = '';
+            let next = '';
+
+            if (pagina === 1) previous = 'disabled'
+            if (pagina === numeroPaginas) next = 'disabled'
+
+            let html_paginacion = `<ul class="pagination justify-content-end"><li class="page-item">
+            <a class="page-link ${previous}" style='cursor:pointer' onclick="listar_centros_salud(${pagina - 1})" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>`;
+
+            if (numeroPaginas > 4) {
+
+                if (pagina < 5) {
+                    for (let count = 1; count <= 5; count++) {
+                        html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+                    }
+                    html_paginacion += `<li class="page-item"><a class="page-link">...</a></li>`;
+                    html_paginacion += ` <li class="page-item"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                } else {
+
+                    let end_limit = parseInt(numeroPaginas) - 5
+                    if (pagina > end_limit) {
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer'  onclick="listar_centros_salud(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' >...</a></li>`;
+                        for (let count = end_limit; count <= numeroPaginas; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer'  onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+                        }
+                    } else {
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(1)" >1</a></li>`;
+                        html_paginacion += `<li class="page-item"><a class="page-link" style='cursor:pointer' >...</a></li>`;
+
+                        for (let count = pagina - 1; count <= parseInt(pagina) + 1; count++) {
+                            html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+                        }
+                        html_paginacion += `<li class="page-item"><a class="page-link" >...</a></li>`;
+                        html_paginacion += ` <li class="page-item"><a class="page-link" style='cursor:pointer'  onclick="listar_centros_salud(${numeroPaginas})" >${numeroPaginas}</a></li>`
+                    }
+
+                }
+
+
+
+            } else {
+
+                for (let count = 1; count <= numeroPaginas; count++) {
+
+                    html_paginacion += `<li class="page-item ${(count === pagina) ? 'active':''}"><a class="page-link" style='cursor:pointer' onclick="listar_centros_salud(${count})" >${count}</a></li>`;
+
+                }
+
+            }
+
+
+
+
+            html_paginacion += `<li class="page-item">
+            <a class="page-link ${next}" style='cursor:pointer'  onclick="listar_centros_salud(${pagina + 1})" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li></ul>`;
+
+            $("#paginacion").html(html_paginacion);
+            $("#table-proveedores").html(html);
         }
     });
 };
